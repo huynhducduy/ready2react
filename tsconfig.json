@@ -1,25 +1,65 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+	"compilerOptions": {
+		"allowJs": true,
+		"target": "ESNext",
+		"experimentalDecorators": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"allowImportingTsExtensions": true,
+		"lib": [
+			"ESNext",
+			"DOM",
+			"DOM.Iterable"
+		],
+		"useDefineForClassFields": true, // https://vitejs.dev/guide/features.html#usedefineforclassfields
+		// Interop constraints
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowSyntheticDefaultImports": true,
+		// END Interop constraints
+		// Type checking
+		"strict": true,
+		"noImplicitOverride": true,
+		"noFallthroughCasesInSwitch": true,
+		// "noImplicitReturns": true, // Way too strict and not worth it?
+		// "noUncheckedIndexedAccess": true, // Way too strict and not worth it?
+		// "exactOptionalPropertyTypes": true, // Way too strict and not worth it?
+		// END Type checking
+		// Handled in eslint: disable them to prevent error duplication
+		"allowUnreachableCode": true, // rule name: no-unreachable
+		"allowUnusedLabels": true, // rule name: no-unused-labels
+		"noUnusedLocals": false, // rule name: no-unused-vars, @typescript-eslint/no-unused-vars
+		"noUnusedParameters": false, // rule name: no-unused-vars, @typescript-eslint/no-unused-vars: in `args` option
+		// END Handled in eslint
+		"jsx": "react-jsx", // React
+		"skipLibCheck": true,
+		"noEmit": true,
+		"incremental": true,
+		// This needs to be above root so that vscode will do auto-import correctly.
+		// Basically, it will respect tsconfig.base.json's aliases in paths first,
+		// because the full non-relative path would be longer.
+		"baseUrl": "..",
+		"paths": {
+			"@/*": [
+				"./src/*"
+			],
+		},
+		"types": [
+			"vite/client"
+		]
+	},
+	"exclude": [
+		"node_modules/*",
+	],
+	"include": [
+		"src/**/*"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
 }
