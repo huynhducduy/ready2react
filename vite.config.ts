@@ -6,12 +6,19 @@ import svgr from "vite-plugin-svgr"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
+	plugins: [
 		react(),
 		!process.env.VITEST ? checker({ typescript: true }) : undefined,
 		legacy({
 			targets: ['defaults', 'not IE 11'],
 		}),
-		svgr(),
+		svgr({
+			svgrOptions: {
+				plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+				svgoConfig: {
+					floatPrecision: 2,
+				},
+			},
+		}),
 	],
 })
