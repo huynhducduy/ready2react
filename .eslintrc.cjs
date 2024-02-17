@@ -40,8 +40,8 @@ const theLastExtend = 'plugin:prettier/recommended' // Always the last: https://
 
 const typescriptExtends = [
   'plugin:import/typescript',
-  'plugin:@typescript-eslint/recommended',
-  'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  'plugin:@typescript-eslint/strict-type-checked',
+  'plugin:@typescript-eslint/stylistic-type-checked',
   'plugin:deprecation/recommended',
 ]
 
