@@ -38,14 +38,18 @@
 		"skipLibCheck": true,
 		"noEmit": true,
 		"incremental": true,
+    "composite": true,
 		// This needs to be above root so that vscode will do auto-import correctly.
 		// Basically, it will respect tsconfig.base.json's aliases in paths first,
 		// because the full non-relative path would be longer.
-		"baseUrl": "..",
+    "baseUrl": ".",
 		"paths": {
 			"@/*": [
 				"./src/*"
 			],
+      "/*": [
+        "./public/*"
+      ]
 		},
 		"types": [
 			"vite/client",
@@ -54,13 +58,8 @@
 	},
 	"exclude": [
 		"node_modules/*",
-	],
+  ],
 	"include": [
-		"src/**/*"
-	],
-	"references": [
-		{
-			"path": "./tsconfig.node.json"
-		}
-	]
+    "**/*",
+  ],
 }

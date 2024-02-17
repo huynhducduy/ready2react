@@ -1,0 +1,117 @@
+// This is a attempt to use eslint newer config format called flat config. But cannot work as expected.
+// Remember to edit `.vscode/settings.json` -> eslint.experimental.useFlatConfig
+
+import reactRefreshPlugin from 'eslint-plugin-react-refresh'
+import path from "path";
+import typescriptEslintParser from '@typescript-eslint/parser'
+import js from "@eslint/js";
+import securityPlugin from 'eslint-plugin-security'
+import { FlatCompat } from "@eslint/eslintrc"
+import importPlugin from 'eslint-plugin-import'
+import noRelativeImportPathsPlugin from 'eslint-plugin-no-relative-import-paths'
+import filenamesPlugin from 'eslint-plugin-filenames'
+import noOnlyTests from 'eslint-plugin-no-only-tests'
+import globals from "globals";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const compat = new FlatCompat({
+    baseDirectory: __dirname
+});
+
+const corePlugins = {
+  'import': importPlugin,
+  'no-relative-import-paths': noRelativeImportPathsPlugin,
+  'filenames': filenamesPlugin,
+  'no-only-tests': noOnlyTests
+}
+
+const reactPlugins = {
+  'react-refresh': reactRefreshPlugin,
+}
+
+const typescriptExtends = [
+  // compat.extends('plugin:import/typescript'),
+  // compat.extends('plugin:@typescript-eslint/recommended'),
+  // compat.extends('plugin:@typescript-eslint/recommended-requiring-type-checking'),
+]
+
+const reactExtends = [
+  // compat.extends('plugin:react/recommended'),
+  // compat.extends('plugin:react/jsx-runtime'),
+  // compat.extends('plugin:react-hooks/recommended'),
+  // compat.extends('plugin:jsx-a11y/recommended'),
+]
+
+export default [
+  // All files
+  js.configs.recommended,
+  // compat.config({
+  //   extends: [
+  //     'plugin:import/recommended',
+  //     'plugin:promise/recommended',
+  //     'plugin:no-use-extend-native/recommended',
+  //     'plugin:deprecation/recommended',
+  //     'plugin:eslint-comments/recommended'
+  //   ],
+  // }),
+  securityPlugin.configs.recommended,
+  {
+    ignores: ['dist'],
+    languageOptions: {
+      sourceType: 'module',
+      ecmaVersion: 'latest',
+      // ecmaFeatures: {
+      //   impliedStrict: true,
+      // },
+      globals: {
+        ...globals.builtin,
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    plugins: corePlugins,
+  },
+  // JSON
+  {
+    // ...compat.extends('plugin:json/recommended'),
+    files: ['**/*.json'],
+  },
+  // Typescript React
+  {
+    ...typescriptExtends,
+    ...reactExtends,
+    languageOptions: {
+      parser: typescriptEslintParser,
+      // ecmaFeatures: {
+      //   jsx: true,
+      // },
+      // project: ['./tsconfig.json', './tsconfig.node.json'],
+    },
+    plugins: reactPlugins,
+    files: ['**/*.tsx'],
+  },
+  // Javascript React
+  {
+    ...reactExtends,
+    plugins: reactPlugins,
+    languageOptions: {
+      // ecmaFeatures: {
+      //   jsx: true,
+      // },
+    },
+    files: ['**/*.jsx'],
+  },
+  // Typescript
+  {
+    ...typescriptExtends,
+    languageOptions: {
+      parser: typescriptEslintParser,
+      // project: ['./tsconfig.json', './tsconfig.node.json'],
+    },
+    files: ['**/*.ts'],
+  },
+  // compat.extends('plugin:prettier/recommended'),
+]
