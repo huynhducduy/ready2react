@@ -55,7 +55,7 @@ const reactExtends = [
 const reactPlugins = ['react-refresh']
 
 const reactRules = {
-  'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+  'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
 }
 
 module.exports = {
@@ -68,10 +68,16 @@ module.exports = {
       impliedStrict: true,
     },
   },
-  plugins: ['import', 'no-relative-import-paths', 'filenames', 'no-only-tests'],
+  plugins: [
+    'import',
+    'no-relative-import-paths',
+    'filenames',
+    'no-only-tests',
+    'simple-import-sort',
+  ],
   rules: {
     'import/no-unresolved': 'error',
-    'no-relative-import-paths/no-relative-import-paths': ['warn', { allowSameFolder: true }],
+    'no-relative-import-paths/no-relative-import-paths': ['warn', {allowSameFolder: true}],
     'filenames/match-exported': 2,
     'filenames/no-index': 2,
     // 'unicorn/better-regex': 'warn',
@@ -85,6 +91,10 @@ module.exports = {
     //   }
     // ],
     'no-only-tests/no-only-tests': 'error',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'sort-imports': 'off',
+    'import/order': 'off',
   },
   settings: {
     'import/parsers': {
@@ -161,6 +171,7 @@ module.exports = {
     {
       files: ['**/*.jsx'],
       extends: [...reactExtends, theLastExtend],
+      plugins: [...reactPlugins],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,

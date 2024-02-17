@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite'
+import legacy from '@vitejs/plugin-legacy'
 import react from '@vitejs/plugin-react-swc'
+import {fileURLToPath, URL} from 'url'
+import {defineConfig} from 'vite'
 // eslint-disable-next-line import/default
 import checker from 'vite-plugin-checker'
-import legacy from '@vitejs/plugin-legacy'
 import svgr from 'vite-plugin-svgr'
-import { fileURLToPath, URL } from 'url'
+
 import packageJson from './package.json'
 
 // https://vitejs.dev/config/
@@ -37,6 +38,6 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: [{ find: '@', replacement: fileURLToPath(new URL('src', import.meta.url)) }],
+    alias: [{find: '@', replacement: fileURLToPath(new URL('src', import.meta.url))}],
   },
 })
