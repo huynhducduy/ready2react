@@ -161,6 +161,7 @@ module.exports = {
         ...reactRules,
       },
     },
+    // TODO: Add config for test files
     // {
     //   files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
     //   excludedFiles: ['**/cypress/**/*'],
