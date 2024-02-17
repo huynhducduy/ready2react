@@ -121,7 +121,16 @@ module.exports = {
     // JSON
     {
       files: ['**/*.json'],
-      extends: ['plugin:json/recommended', theLastExtend],
+      excludedFiles: ['tsconfig.json'], // tsconfig.json is actually accept json5 format
+      extends: ['plugin:jsonc/recommended-with-json', 'plugin:jsonc/prettier', theLastExtend],
+    },
+    {
+      files: ['**/*.jsonc'],
+      extends: ['plugin:jsonc/recommended-with-jsonc', 'plugin:jsonc/prettier', theLastExtend],
+    },
+    {
+      files: ['**/*.json5', 'tsconfig.json'],
+      extends: ['plugin:jsonc/recommended-with-json5', 'plugin:jsonc/prettier', theLastExtend],
     },
     // Typescript React
     {
