@@ -1,5 +1,5 @@
 // This is a attempt to use eslint newer config format called flat config. But cannot work as expected.
-// Remember to edit `.vscode/settings.json` -> eslint.experimental.useFlatConfig
+// Remember to edit `.vscode/settings.json` -> eslint.experimental.useFlatConfig, and vite.config.ts (useFlatConfig)
 
 import reactRefreshPlugin from 'eslint-plugin-react-refresh'
 import path from "path";

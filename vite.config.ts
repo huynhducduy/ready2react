@@ -17,6 +17,7 @@ export default defineConfig({
           typescript: true,
           eslint: {
             lintCommand: packageJson.scripts['lint:script'],
+            useFlatConfig: false,
           },
           // TODO: enable stylelint
           // stylelint: {
