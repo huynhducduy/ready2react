@@ -1,39 +1,84 @@
-import './App.css'
+import './App.scss'
+import 'lazysizes'
+import 'lazysizes/plugins/parent-fit/ls.parent-fit'
+import 'lazysizes/plugins/attrchange/ls.attrchange'
+import './setupSchema'
 
-import {useState} from 'react'
+import {Partytown} from '@builder.io/partytown/react'
+import {announce} from '@react-aria/live-announcer'
+import {addIntegration, tanstackRouterBrowserTracingIntegration} from '@sentry/react'
+import {QueryClientProvider, useQueryErrorResetBoundary} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
+import {RouterProvider} from '@tanstack/react-router'
+import {lazy, type PropsWithChildren, Suspense, useEffect, useState} from 'react'
+// import {Inspector} from 'react-dev-inspector'
+import {ErrorBoundary} from 'react-error-boundary'
+import {Toaster} from 'sonner'
 
-import viteLogo from '/vite.svg'
-import ReactLogo from '@/assets/react.svg?react'
+import {logError} from '@/utils/logger'
+import QueryErrorComponent from '@/views/Error/QueryErrorComponent'
+
+import AuthUpdater from './auth/AuthUpdater'
+import GoogleOneTapLogin from './auth/components/GoogleOneTapLogin'
+import {DEBUG} from './constants/config'
+import Head from './lib/head/Head'
+import {createQueryClient} from './queries/queries'
+import {createRouter} from './router'
+import ErrorComponent from './views/Error/ErrorComponent'
+
+const JotaiDevTools = import.meta.env.PROD
+  ? () => null
+  : lazy(() => import('./utils/components/JotaiDevTools'))
+
+function QueryErrorBoundary({children}: PropsWithChildren) {
+  const {reset} = useQueryErrorResetBoundary()
+
+  return (
+    <ErrorBoundary onReset={reset} fallbackRender={QueryErrorComponent}>
+      {children}
+    </ErrorBoundary>
+  )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Ensures each request has its own cache in SSR
+  const [queryClient] = useState(() => createQueryClient())
+
+  const [router] = useState(() => createRouter({queryClient}))
+
+  addIntegration(tanstackRouterBrowserTracingIntegration(router))
+
+  useEffect(() => {
+    // Init the live announcer, fixes for https://github.com/adobe/react-spectrum/issues/5191
+    announce(' ', 'polite', 0)
+  }, [])
 
   return (
     <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank' rel='noreferrer'>
-          <div className='logo react'>
-            <ReactLogo />
-          </div>
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button
-          onClick={() => {
-            setCount(count => count + 1)
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
+      <ErrorBoundary fallback={null}>
+        <Partytown debug={DEBUG} forward={['dataLayer.push']} />
+      </ErrorBoundary>
+      <ErrorBoundary
+        fallbackRender={({error}) => {
+          logError(error)
+          return <ErrorComponent />
+        }}
+      >
+        {/* <Inspector /> */}
+        <Suspense>
+          <JotaiDevTools />
+        </Suspense>
+        <Head />
+        <QueryClientProvider client={queryClient}>
+          <QueryErrorBoundary>
+            <Toaster richColors />
+            <GoogleOneTapLogin router={router} />
+            <AuthUpdater router={router} />
+            <RouterProvider router={router} />
+          </QueryErrorBoundary>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </ErrorBoundary>
     </>
   )
 }

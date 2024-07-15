@@ -1,0 +1,61 @@
+// Viewport logic
+// Default: 1440 -> infinity (xl)
+$Viewport-Width-1: 89.9375rem; // 1024 -> 1439 (lg)
+$Viewport-Width-2: 63.9375rem; // 768 -> 1023 (md)
+$Viewport-Width-3: 47.9375rem; // 425 -> 767 (sm)
+$Viewport-Width-4: 26.5rem; // 0 -> 424 (xs)
+
+@mixin viewport($size) {
+  @if $size == 1 {
+    @media only screen and (max-width: $Viewport-Width-1) {
+      @content;
+    }
+  } @else if $size == 2 {
+    @media only screen and (max-width: $Viewport-Width-2) {
+      @content;
+    }
+  } @else if $size == 3 {
+    @media only screen and (max-width: $Viewport-Width-3) {
+      @content;
+    }
+  } @else if $size == 4 {
+    @media only screen and (max-width: $Viewport-Width-4) {
+      @content;
+    }
+  }
+}
+@mixin visually-hidden {
+  position: absolute !important;
+
+  overflow: hidden !important;
+
+  inline-size: 1px !important;
+  block-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  white-space: nowrap !important;
+
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+}
+@mixin auto-hide-scroll-bar {
+  &::-webkit-scrollbar-track {
+    margin: 1rem;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #cd2732;
+
+      &:hover {
+        background: #a0131c;
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "routesDirectory": "./src/routes",
+  "generatedRouteTree": "./src/routeTree.gen.ts",
+  "routeFileIgnoreSuffix": "_deprecated",
+  "quoteStyle": "single",
+  "semicolons": false,
+  "disableTypes": false,
+  "routeFileIgnorePrefix": "-"
+}

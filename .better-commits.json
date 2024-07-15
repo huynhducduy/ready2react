@@ -60,14 +60,14 @@
         "value": "ci",
         "label": "ci",
         "hint": "Changes to our CI configuration files and scripts",
-        "emoji": "🤖",
+        "emoji": "🔧",
         "trailer": "Changelog: ci"
       },
       {
         "value": "chore",
         "label": "chore",
         "hint": "Other changes that do not modify src or test files",
-        "emoji": "🧹",
+        "emoji": "🗑️",
         "trailer": "Changelog: chore"
       },
       {
@@ -121,13 +121,7 @@
   "commit_footer": {
     "enable": true,
     "initial_value": [],
-    "options": [
-      "closes",
-      "trailer",
-      "breaking-change",
-      "deprecated",
-      "custom"
-    ]
+    "options": ["closes", "trailer", "breaking-change", "deprecated", "custom"]
   },
   "breaking_change": {
     "add_exclamation_to_title": true
@@ -163,13 +157,7 @@
     "separator": ""
   },
   "branch_action_default": "branch",
-  "branch_order": [
-    "user",
-    "version",
-    "type",
-    "ticket",
-    "description"
-  ],
+  "branch_order": ["user", "version", "type", "ticket", "description"],
   "enable_worktrees": true,
   "overrides": {
     "shell": "/bin/sh"

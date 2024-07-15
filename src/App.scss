@@ -1,0 +1,75 @@
+@use '@/style/utils';
+
+* {
+  outline-color: var(--Primary-600, #cd2732);
+  outline-offset: -0.125rem;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-width: 0.125rem;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: 100%;
+  padding-block: env(safe-area-inset-top) env(safe-area-inset-bottom);
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+}
+
+body {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+#root {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-block-size: calc(100% + env(safe-area-inset-top) + env(safe-area-inset-bottom));
+}
+
+.visually-hidden:not(:focus, :active, :focus-within),
+.strict-visually-hidden {
+  @include utils.visually-hidden;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 10000;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+
+  color: #fff;
+  text-decoration: none;
+
+  background-color: #cd2732;
+  border-end-start-radius: 0.5rem;
+  border-end-end-radius: 0.5rem;
+}
+
+/* width */
+::-webkit-scrollbar {
+  inline-size: 0.375rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // background-color: #fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cd2732;
+
+  /* Handle on hover */
+  &:hover {
+    background: #a0131c;
+  }
+}

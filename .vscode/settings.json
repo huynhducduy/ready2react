@@ -1,0 +1,52 @@
+{
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "eslint.useFlatConfig": true,
+  "prettier.enable": false, // Use only the ESLint formatter, Stylelint formatter
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never", // Imports are organize by eslint
+    "source.sortImports": "never", // Imports are sorted by eslint
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always"
+  },
+  // Silent the stylistic rules in you IDE, but still auto fix them
+  "eslint.rules.customizations": [
+    {
+      "rule": "prettier/prettier",
+      "severity": "off"
+    }
+  ],
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  // Enable eslint for all supported languages
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "json",
+    "jsonc",
+    "json5"
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "venv": true,
+    "*.sublime-*": true,
+    "env*": true,
+    "**/routeTree.gen.ts": true
+  },
+  "explorerExclude.backup": {},
+  "eslint.runtime": "node", // Run eslint via our local node instead of vscode's node
+  "typescript.tsserver.nodePath": "node", // Run typescript via our local node instead of vscode's node
+  "commentAnchors.workspace.excludeFiles": "**/{node_modules,.git,.idea,target,out,build,dist,bin,obj,vendor,.unlighthouse,.swc,.imageoptimizercache}/**/*"
+}

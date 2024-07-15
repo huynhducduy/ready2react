@@ -1,0 +1,113 @@
+.Overlay {
+  position: fixed;
+  z-index: 100;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+
+  overflow: hidden;
+
+  inline-size: 100%;
+  block-size: 100%;
+
+  background-color: rgb(0 0 0 / 20%);
+
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 300ms;
+
+  // TODO: update to performant animation
+  /* stylelint-disable-next-line plugin/no-low-performance-animation-properties */
+  transition-property: background-color;
+
+  &.IsEntering {
+    background-color: rgb(0 0 0 / 20%);
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &.IsExiting {
+    background-color: rgb(0 0 0 / 0%);
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  .Modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    inline-size: calc(100% - 2rem);
+    max-inline-size: 26rem;
+    block-size: 100%;
+    margin-block: 0;
+    margin-inline: auto;
+
+    .Dialog {
+      inline-size: 100%;
+      padding: 1.5rem;
+
+      font-family: Manrope, sans-serif;
+
+      background-color: #fff;
+      border-radius: 2rem;
+      outline: none;
+
+      .Heading[slot='title'] {
+        margin: 0;
+        padding-block-end: 1rem;
+        text-align: center;
+        border-block-end: 0.125rem solid #f0f0f0;
+      }
+
+      .Description {
+        margin-block-start: 1rem;
+        color: var(--Gray-700, #40414a);
+        text-align: center;
+      }
+
+      .Action {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-around;
+        margin-block-start: 1rem;
+
+        button {
+          cursor: pointer;
+
+          display: flex;
+          flex: 1;
+          gap: 0.625rem;
+          align-items: center;
+          justify-content: center;
+
+          inline-size: 100%;
+          block-size: 3.5rem;
+          min-block-size: 3.5rem;
+          padding-block: 0.5rem;
+          padding-inline: 1.375rem;
+
+          font-size: 1rem;
+          font-weight: 700;
+          font-style: normal;
+          line-height: normal;
+          text-align: center;
+
+          border: 0;
+          border-radius: 2.5rem;
+
+          &.Cancel {
+            color: var(--Primary-600, #cd2732);
+            background-color: #fff;
+            border: 1px solid var(--Primary-600, #cd2732);
+          }
+
+          &.Ok {
+            color: var(--Gray-50, #f9fafa);
+            background: var(--Primary-600, #cd2732);
+
+            &:hover {
+              background: var(--Primary-700, #a31f2d);
+            }
+          }
+        }
+      }
+    }
+  }
+}

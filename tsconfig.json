@@ -6,18 +6,19 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "sourceMap": true,
     "allowImportingTsExtensions": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
     "useDefineForClassFields": true, // https://vitejs.dev/guide/features.html#usedefineforclassfields
     // Interop constraints
     "isolatedModules": true,
+    "isolatedDeclarations": false, // NOTE: to be enabled in the future for faster builds, especially in monorepo https://github.com/microsoft/TypeScript/issues/58944 https://x.com/boshen_c/status/1803829096776106235
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     // END Interop constraints
     // Type checking
     "strict": true,
+    "strictNullChecks": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     // "noImplicitReturns": true, // Way too strict and not worth it?
@@ -35,6 +36,11 @@
     "noEmit": true,
     "incremental": true,
     "composite": true,
+    "declaration": true,
+    "sourceMap": true,
+    "sourceRoot": "/",
+    "noEmitHelpers": true,
+    "importHelpers": true,
     // This needs to be above root so that vscode will do auto-import correctly.
     // Basically, it will respect tsconfig.base.json's aliases in paths first,
     // because the full non-relative path would be longer.
@@ -43,7 +49,7 @@
       "@/*": ["./src/*"],
       "/*": ["./public/*"]
     },
-    "types": ["vite/client", "vite-plugin-svgr/client"]
+    "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals", "gtag.js"]
   },
   "exclude": ["node_modules/*"],
   "include": ["**/*"]

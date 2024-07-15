@@ -1,0 +1,82 @@
+diff --git a/cjs/eslint-plugin-react-hooks.development.js b/cjs/eslint-plugin-react-hooks.development.js
+index 441442f8535bcd534748c1664afd6677b10744c3..2600ef816f83ffc949aec89655ecc87efac75336 100644
+--- a/cjs/eslint-plugin-react-hooks.development.js
++++ b/cjs/eslint-plugin-react-hooks.development.js
+@@ -735,7 +735,29 @@ var ExhaustiveDeps = {
+         },
+         enableDangerousAutofixThisMayCauseInfiniteLoops: {
+           type: 'boolean'
+-        }
++        },
++        staticHooks: {
++          type: 'object',
++          additionalProperties: {
++            oneOf: [
++              {
++                type: 'boolean',
++              },
++              {
++                type: 'array',
++                items: {
++                  type: 'boolean',
++                },
++              },
++              {
++                type: 'object',
++                additionalProperties: {
++                  type: 'boolean',
++                },
++              },
++            ],
++          },
++        },
+       }
+     }]
+   },
+@@ -743,9 +765,11 @@ var ExhaustiveDeps = {
+     // Parse the `additionalHooks` regex.
+     var additionalHooks = context.options && context.options[0] && context.options[0].additionalHooks ? new RegExp(context.options[0].additionalHooks) : undefined;
+     var enableDangerousAutofixThisMayCauseInfiniteLoops = context.options && context.options[0] && context.options[0].enableDangerousAutofixThisMayCauseInfiniteLoops || false;
++    var staticHooks = (context.options && context.options[0] && context.options[0].staticHooks) || {};
+     var options = {
+       additionalHooks: additionalHooks,
+-      enableDangerousAutofixThisMayCauseInfiniteLoops: enableDangerousAutofixThisMayCauseInfiniteLoops
++      enableDangerousAutofixThisMayCauseInfiniteLoops: enableDangerousAutofixThisMayCauseInfiniteLoops,
++      staticHooks: staticHooks,
+     };
+ 
+     function reportProblem(problem) {
+@@ -954,6 +978,33 @@ var ExhaustiveDeps = {
+               return true;
+             }
+           }
++        } else if (options.staticHooks[name]) {
++          const staticParts = options.staticHooks[name];
++          if (staticParts === true) {
++            // entire return value is static
++            return true;
++          } else if (Array.isArray(staticParts)) {
++            // destructured tuple return where some elements are static
++            if (
++              id.type === 'ArrayPattern' &&
++              id.elements.length <= staticParts.length &&
++              Array.isArray(resolved.identifiers)
++            ) {
++              // find index of the resolved ident in the array pattern
++              const idx = id.elements.findIndex(
++                ident => ident === resolved.identifiers[0],
++              );
++              if (idx >= 0) {
++                return staticParts[idx];
++              }
++            }
++          } else if (typeof staticParts === 'object' && id.type === 'ObjectPattern') {
++            // destructured object return where some properties are static
++            const property = id.properties.find(p => p.key === resolved.identifiers[0])
++            if (property) {
++              return staticParts[property.key.name]
++            }
++          }
+         } // By default assume it's dynamic.
+ 
+ 
