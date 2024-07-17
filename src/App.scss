@@ -1,34 +1,25 @@
 @use '@/style/utils';
+@import '@/style/reset';
+
+/* Fix for fullscreen page in PWA */
+
+// html,
+// body,
+// #root {
+//   inline-size: 100%;
+//   max-inline-size: 100%;
+//   block-size: 100%;
+//   min-block-size: 100%;
+// }
+
+// html {
+//   min-block-size: calc(100% + env(safe-area-inset-top));
+// }
+
+/* END fix */
 
 * {
-  outline-color: var(--Primary-600, #cd2732);
-  outline-offset: -0.125rem;
-
-  &:focus-visible {
-    outline-style: solid;
-    outline-width: 0.125rem;
-  }
-}
-
-html {
-  scroll-behavior: smooth;
-
-  inline-size: 100%;
-  max-inline-size: 100%;
-  block-size: 100%;
-  padding-block: env(safe-area-inset-top) env(safe-area-inset-bottom);
-  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
-}
-
-body {
-  inline-size: 100%;
-  block-size: 100%;
-}
-
-#root {
-  inline-size: 100%;
-  max-inline-size: 100%;
-  min-block-size: calc(100% + env(safe-area-inset-top) + env(safe-area-inset-bottom));
+  outline-color: var(--Primary-Color, #cd2732);
 }
 
 .visually-hidden:not(:focus, :active, :focus-within),
@@ -54,22 +45,24 @@ body {
   border-end-end-radius: 0.5rem;
 }
 
-/* width */
+/* Scrollbar Width */
 ::-webkit-scrollbar {
   inline-size: 0.375rem;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  // background-color: #fff;
-}
+/* Scrollbar Track */
+// ::-webkit-scrollbar-track {
+//   background-color: #fff;
+// }
 
-/* Handle */
+/* Scrollbar Handle */
 ::-webkit-scrollbar-thumb {
   background: #cd2732;
 
   /* Handle on hover */
-  &:hover {
-    background: #a0131c;
+  @media (hover: hover) {
+    &:hover {
+      background: #a0131c;
+    }
   }
 }

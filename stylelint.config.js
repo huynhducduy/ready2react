@@ -22,7 +22,7 @@ const config = {
     'stylelint-config-clean-order', // https://npmtrends.com/stylelint-config-clean-order-vs-stylelint-config-concentric-order-vs-stylelint-config-hudochenkov/order-vs-stylelint-config-idiomatic-order-vs-stylelint-config-property-sort-order-smacss-vs-stylelint-config-rational-order-vs-stylelint-config-recess-order
   ],
   rules: {
-    'unit-allowed-list': ['%', 'deg', 'px', 'rem', 'ms', 's', 'dvh', 'fr'],
+    'unit-allowed-list': ['%', 'deg', 'px', 'rem', 'ms', 's', 'dvh', 'fr', 'ex'],
     'custom-property-pattern': '([A-Z][a-z]+)(-[A-Z][a-z]+)*',
     'scss/dollar-variable-pattern': '([A-Z][a-z]+)(-[A-Z][a-z]+)*',
     'liberty/use-logical-spec': 'always',

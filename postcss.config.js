@@ -14,7 +14,6 @@ export default () => {
       autoprefixer,
       calc,
       // require('postcss-inline-svg') // Use svg in css instead of react component?
-      // require('postcss-normalize'), // Already using modern-normalize, or consider using postcss-initial + postcss-autoreset ?
       // require('cssnano'), // Vite already using esbuild minify
       // process.env.NODE_ENV === 'production'
       //   ? require('postcss-logical')({

@@ -1,5 +1,4 @@
 import './instrument'
-import './main.css'
 
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'

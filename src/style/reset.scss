@@ -1,0 +1,154 @@
+// References:
+// https://meyerweb.com/eric/tools/css/reset/
+// https://github.com/necolas/normalize.css/blob/master/normalize.css
+// https://github.com/twbs/bootstrap/blob/main/scss/_reboot.scss
+// https://piccalil.li/blog/a-more-modern-css-reset/
+// https://github.com/csstools/sanitize.css/blob/main/sanitize.css
+// https://www.joshwcomeau.com/css/custom-css-reset
+// https://raw.githubusercontent.com/elad2412/the-new-css-reset/main/css/reset.css
+// https://cdn.jsdelivr.net/npm/modern-normalize/modern-normalize.css
+
+// :root is equivalent to html but with higher specificity, and the convention is to use :root to set variables
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+
+  /* Improve text spacing: https://www.w3.org/WAI/WCAG21/Understanding/text-spacing.html */
+  line-height: 1.5;
+
+  /* Prevent font size inflation */
+  text-size-adjust: none;
+  background: none;
+
+  @media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+    /* Disabled user select in PWA */
+    user-select: none;
+
+    /* Disabled bounce, overscroll (pull) to refresh; disable swipe to navigate in PWA */
+    overscroll-behavior: none none;
+
+    /* Disable link popup in PWA */
+    -webkit-touch-callout: none;
+  }
+}
+
+/* Root stacking context */
+/* stylelint-disable-next-line selector-id-pattern */
+#root,
+#__next {
+  isolation: isolate;
+}
+
+:has(:target) {
+  /* Anything that has been anchored to should have extra scroll margin */
+  scroll-padding-block: 5ex;
+
+  /* Smooth scrolling */
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+}
+
+* {
+  /* Remove default margin, padding */
+  margin: 0;
+  padding: 0;
+
+  /* Word wrapping */
+  hyphens: auto;
+  overflow-wrap: break-word;
+
+  /* Remove border, border-radius */
+  border: 0;
+  border-radius: none;
+
+  /* outline style */
+  outline-offset: -0.125rem;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-width: 0.125rem;
+  }
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Remove summary style on webkit */
+details {
+  summary {
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+}
+
+/* Better wrap for paragraphs */
+p {
+  // max-inline-size: 80ch;
+  text-wrap: pretty;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+  line-height: 1.1;
+}
+
+/* Default styling for button */
+button {
+  cursor: pointer;
+  background: none;
+}
+
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  color: currentcolor;
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images and media easier to work with */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-inline-size: 100%;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+}
