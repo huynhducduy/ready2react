@@ -1,35 +1,23 @@
 {
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "eslint.useFlatConfig": true,
-  "prettier.enable": false, // Use only the ESLint formatter, Stylelint formatter
+  "stylelint.packageManager": "pnpm",
+  "npm.packageManager": "pnpm",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "never", // Imports are organize by eslint
     "source.sortImports": "never", // Imports are sorted by eslint
     "source.fixAll.eslint": "always",
     "source.fixAll.stylelint": "always"
   },
-  // Silent the stylistic rules in you IDE, but still auto fix them
-  "eslint.rules.customizations": [
-    {
-      "rule": "prettier/prettier",
-      "severity": "off"
-    }
-  ],
-  "[scss]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "[sass]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "[postcss]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "stylelint.validate": ["css", "postcss", "scss", "sass"],
-  // Enable eslint for all supported languages
+  // Typescript
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.validate.enable": true, // Unlike javascript, we still need typescript validator as its not covered by eslint
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.nodePath": "node", // Run typescript via our local node instead of vscode's node
+  // Eslint
+  "eslint.useFlatConfig": true,
+  // Disable vscode default validator
+  "javascript.validate.enable": false,
+  "json.validate.enable": false,
+  // Use eslint to validate instead
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -40,6 +28,62 @@
     "jsonc",
     "json5"
   ],
+  // Use only eslint to format (because its included prettier rules)
+  // Disable vscode default formatter
+  "json.format.enable": false,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+  "eslint.format.enable": true,
+  "[json]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json5]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "eslint.rules.customizations": [
+    {
+      "rule": "prettier/prettier",
+      "severity": "off" // Silent the stylistic rules in you IDE, but still auto fix them
+    }
+  ],
+  "eslint.runtime": "node", // Run eslint via our local node instead of vscode's node
+  // Stylelint
+  "stylelint.validate": ["css", "postcss", "scss", "sass", "less"],
+  "stylelint.snippet": ["css", "postcss", "scss", "sass", "less"],
+  // Use only styleleint to format (because its included prettier rules)
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[sass]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[postcss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -54,9 +98,5 @@
     "*.sublime-*": true,
     "env*": true,
     "**/routeTree.gen.ts": true
-  },
-  "explorerExclude.backup": {},
-  "eslint.runtime": "node", // Run eslint via our local node instead of vscode's node
-  "typescript.tsserver.nodePath": "node", // Run typescript via our local node instead of vscode's node
-  "commentAnchors.workspace.excludeFiles": "**/{node_modules,.git,.idea,target,out,build,dist,bin,obj,vendor,.unlighthouse,.swc,.imageoptimizercache}/**/*"
+  }
 }

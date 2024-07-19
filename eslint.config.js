@@ -1,7 +1,7 @@
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-import {fixupConfigRules, fixupPluginRules} from '@eslint/compat'
+import {fixupConfigRules} from '@eslint/compat'
 import {FlatCompat} from '@eslint/eslintrc'
 import eslint from '@eslint/js'
 import pluginEslintComments from '@eslint-community/eslint-plugin-eslint-comments'
@@ -11,7 +11,7 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 import pluginGitignore from 'eslint-config-flat-gitignore'
 import pluginCssModules from 'eslint-plugin-css-modules'
 import pluginDepend from 'eslint-plugin-depend'
-import pluginDeprecation from 'eslint-plugin-deprecation'
+// import pluginDeprecation from 'eslint-plugin-deprecation'
 import {plugin as exceptionHandling} from 'eslint-plugin-exception-handling'
 import pluginImportX from 'eslint-plugin-import-x'
 import pluginJestDom from 'eslint-plugin-jest-dom'
@@ -224,14 +224,15 @@ const typescriptConfigs = [
       },
     },
   }),
-  ...applyToTypescript('typescript/deprecation', {
-    plugins: {
-      deprecation: fixupPluginRules(pluginDeprecation),
-    },
-    rules: {
-      'deprecation/deprecation': 'error',
-    },
-  }),
+  // Disabled due to poor performance
+  // ...applyToTypescript('typescript/deprecation', {
+  //   plugins: {
+  //     deprecation: fixupPluginRules(pluginDeprecation),
+  //   },
+  //   rules: {
+  //     'deprecation/deprecation': 'error',
+  //   },
+  // }),
   ...applyToTypescript('typescript/strict', tsEslint.configs.strictTypeChecked),
   ...applyToTypescript('typescript/stylistic', tsEslint.configs.stylisticTypeChecked),
   ...applyToTypescript('typescript', {
@@ -373,6 +374,9 @@ const config = tsEslint.config(
     files: ['.gitignore', '.eslintignore'],
     strict: false,
   }),
+  {
+    ignores: ['public/*', '**/*.gen.ts'],
+  },
   ...coreConfigs,
   ...jsonConfigs,
   ...typescriptConfigs,
