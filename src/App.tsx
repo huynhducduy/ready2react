@@ -3,6 +3,7 @@ import 'lazysizes'
 import 'lazysizes/plugins/parent-fit/ls.parent-fit'
 import 'lazysizes/plugins/attrchange/ls.attrchange'
 import './setupSchema'
+import './i18n/setup'
 
 import {Partytown} from '@builder.io/partytown/react'
 import {announce} from '@react-aria/live-announcer'

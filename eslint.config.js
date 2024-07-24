@@ -13,6 +13,7 @@ import pluginCssModules from 'eslint-plugin-css-modules'
 import pluginDepend from 'eslint-plugin-depend'
 // import pluginDeprecation from 'eslint-plugin-deprecation'
 import {plugin as exceptionHandling} from 'eslint-plugin-exception-handling'
+import pluginI18next from 'eslint-plugin-i18next'
 import pluginImportX from 'eslint-plugin-import-x'
 import pluginJestDom from 'eslint-plugin-jest-dom'
 import pluginJsonc from 'eslint-plugin-jsonc'
@@ -87,7 +88,7 @@ function createApplyTo(include, exclude = []) {
 }
 
 const applyToAll = createApplyTo(['**/*.?(c|m)[jt]s?(x)', '**/*.json?(c|5)'])
-// const applyToScript = createApplyTo(['**/*.?(c|m)[jt]s?(x)'])
+const applyToScript = createApplyTo(['**/*.?(c|m)[jt]s?(x)'])
 const applyToJson = createApplyTo(['**/*.json'], ['**/tsconfig.json', '.vscode/settings.json'])
 const applyToJsonc = createApplyTo(['**/*.jsonc', '.vscode/settings.json'])
 const applyToJson5 = createApplyTo(['**/*.json5', '**/tsconfig.json'])
@@ -207,6 +208,17 @@ const jsonConfigs = [
   ...applyToJsonc('json/jsonc', pluginJsonc.configs['flat/recommended-with-jsonc']),
   ...applyToJson5('json/json5', pluginJsonc.configs['flat/recommended-with-json5']),
   ...applyToJsonC5('json', pluginJsonc.configs['flat/prettier']),
+]
+
+const scriptConfigs = [
+  ...applyToScript('i18next', {
+    plugins: {
+      i18next: pluginI18next,
+    },
+    rules: {
+      'i18next/no-literal-string': 1,
+    },
+  }),
 ]
 
 const typescriptConfigs = [
@@ -379,6 +391,7 @@ const config = tsEslint.config(
   },
   ...coreConfigs,
   ...jsonConfigs,
+  ...scriptConfigs,
   ...typescriptConfigs,
   ...reactConfigs,
   ...testConfigs,
@@ -420,6 +433,12 @@ const config = tsEslint.config(
       ],
       'sonarjs/no-duplicate-string': 'warn',
       'promise/always-return': ['warn', {ignoreLastCallback: true}],
+      'promise/no-callback-in-promise': [
+        'warn',
+        {
+          exceptions: ['process.nextTick', 'setImmediate', 'setTimeout'],
+        },
+      ],
     },
   }),
   ...applyToAll('prettier', pluginPrettierRecommended), // Always the last
