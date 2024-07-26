@@ -7,6 +7,7 @@ export default function useClientValue<T = unknown, T2 = undefined>(
   factory: () => T,
   defaultValue?: T2,
 ) {
+  // eslint-disable-next-line react-compiler/react-compiler -- it's intentional
   // eslint-disable-next-line react-hooks/exhaustive-deps -- it's intentional, deps is changed on every render so the value will update every render
   return useMemoClientValue(factory, [{}], defaultValue)
 }
@@ -32,6 +33,7 @@ export function useMemoClientValue<T = unknown, T2 = undefined>(
       clientValue.current = factory()
       update()
     }
+    // eslint-disable-next-line react-compiler/react-compiler -- it's intentional
     // eslint-disable-next-line react-hooks/exhaustive-deps -- this is intentional, we only want to run this once (on the first render)
   }, [])
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import {type ForwardedRef, forwardRef, type PropsWithChildren} from 'react'
+import {type ForwardedRef, type PropsWithChildren, useRef} from 'react'
 import {type AriaButtonOptions, useButton} from 'react-aria'
 import {ButtonContext, useContextProps} from 'react-aria-components'
 
@@ -14,21 +14,23 @@ type Props = PropsWithChildren<
   } & AriaButtonOptions<'button'>
 >
 
-export default forwardRef(function PrimaryButton(
+export default function PrimaryButton(
   {showPendingIndicator = true, ...props}: Props,
-  ref: ForwardedRef<HTMLButtonElement>,
+  ref?: ForwardedRef<HTMLButtonElement>,
 ) {
-  ;[props, ref] = useContextProps(
+  const emptyRef = useRef(null)
+
+  const [newProps, newRef] = useContextProps(
     {
       ...props,
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- || is the correct logic
       isDisabled: props.isDisabled || props.isPending,
     },
-    ref,
+    ref ?? emptyRef,
     ButtonContext,
   )
 
-  const {buttonProps} = useButton(props, ref)
+  const {buttonProps} = useButton(newProps, newRef)
 
   const defaultClassName = clsx(
     style.Button,
@@ -60,4 +62,4 @@ export default forwardRef(function PrimaryButton(
       {props.children}
     </button>
   )
-})
+}

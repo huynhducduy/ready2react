@@ -26,5 +26,6 @@ function memoizeCallback<T extends (...args: any[]) => any>(callback: T) {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- its intentional
 export default function useCallback<T extends (...args: any[]) => any>(callback: T, deps: any[]) {
+  // eslint-disable-next-line react-compiler/react-compiler -- its intentional
   return useCallbackBase(memoizeCallback<T>(callback), deps)
 }

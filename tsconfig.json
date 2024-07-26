@@ -31,7 +31,7 @@
     "noUnusedLocals": false, // rule name: no-unused-vars, @typescript-eslint/no-unused-vars
     "noUnusedParameters": false, // rule name: no-unused-vars, @typescript-eslint/no-unused-vars: in `args` option
     // END Handled in eslint
-    "jsx": "react-jsx", // React
+    "jsx": "preserve", // React
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,

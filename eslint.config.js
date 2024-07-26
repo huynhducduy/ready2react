@@ -26,6 +26,8 @@ import pluginNoSecrets from 'eslint-plugin-no-secrets'
 import pluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import pluginPromise from 'eslint-plugin-promise'
+// eslint-disable-next-line import-x/default, import-x/no-named-as-default, import-x/no-named-as-default-member -- import-x error
+import pluginReactCompiler from 'eslint-plugin-react-compiler'
 import pluginReactRefresh from 'eslint-plugin-react-refresh'
 import * as pluginRegexp from 'eslint-plugin-regexp'
 import pluginSecurity from 'eslint-plugin-security'
@@ -288,6 +290,14 @@ const reactConfigs = [
     },
     rules: {
       'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
+    },
+  }),
+  ...applyToReact('react/refresh', {
+    plugins: {
+      'react-compiler': pluginReactCompiler,
+    },
+    rules: {
+      'react-compiler/react-compiler': 'error',
     },
   }),
   ...applyToReact('react', {
