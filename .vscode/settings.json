@@ -84,6 +84,8 @@
   "[postcss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
+  // svg files
+  "prettier.documentSelectors": ["**/*.svg"],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

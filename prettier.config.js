@@ -10,4 +10,5 @@ export default {
   arrowParens: 'avoid',
   proseWrap: 'preserve',
   htmlWhitespaceSensitivity: 'strict',
+  plugins: ['@svgr/plugin-prettier'],
 }
