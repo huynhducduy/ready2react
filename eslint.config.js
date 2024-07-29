@@ -270,7 +270,17 @@ const reactConfigs = [
     'react/hooks',
     fixupConfigRules(compat.extends('plugin:react-hooks/recommended')),
   ),
-  ...applyToReact('react/a11y', pluginJsxA11y.flatConfigs.recommended), // How about pluginJsxA11y.flatConfigs.strict?
+  ...applyToReact('react/a11y', {
+    ...pluginJsxA11y.flatConfigs.recommended,
+    settings: {
+      'jsx-a11y': {
+        polymorphicPropName: 'as',
+        components: {
+          VisuallyHidden: 'span',
+        },
+      },
+    },
+  }), // How about pluginJsxA11y.flatConfigs.strict?
   ...applyToReact('react/query', pluginQuery.configs['flat/recommended']),
   ...applyToReact('react/dom', pluginReact.configs.dom), // Exclude react in server?
   ...applyToReact('react/x', {
