@@ -35,8 +35,8 @@
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
-    "composite": true,
-    "declaration": true,
+    "composite": false,
+    "declaration": false,
     "sourceMap": true,
     "sourceRoot": "/",
     "noEmitHelpers": true,
@@ -51,6 +51,6 @@
     },
     "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals", "gtag.js"]
   },
-  "exclude": ["node_modules/*"],
+  "exclude": ["node_modules/*", "dist/*", "**/~partytown/*", "coverage/*"],
   "include": ["**/*"]
 }
