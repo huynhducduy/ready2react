@@ -287,6 +287,7 @@ const reactConfigs = [
     ...pluginReact.configs['recommended-type-checked'],
     settings: {
       'react-x': {
+        polymorphicPropName: 'as',
         additionalHooks: {
           useLayoutEffect: ['useIsomorphicLayoutEffect'],
         },
