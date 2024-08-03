@@ -5,7 +5,7 @@ export function formatLocaleDateTime(
 ) {
   try {
     return Intl.DateTimeFormat(locale, options).format(d)
-  } catch (e) {
+  } catch {
     return 'Invalid date'
   }
 }

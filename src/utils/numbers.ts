@@ -17,13 +17,13 @@ export function parseNumber(n: string, locale: Intl.LocalesArgument = 'en-US') {
     ...new Intl.NumberFormat(locale, {useGrouping: false}).format(9876543210),
   ].reverse()
   const index = new Map(numerals.map((d, i) => [d, String(i)]))
-  const _group = new RegExp(`[${parts.find(d => d.type === 'group')?.value}]`, 'g')
-  const _decimal = new RegExp(`[${parts.find(d => d.type === 'decimal')?.value}]`)
-  const _numeral = new RegExp(`[${numerals.join('')}]`, 'g')
+  const group = new RegExp(`[${parts.find(d => d.type === 'group')?.value}]`, 'g')
+  const decimal = new RegExp(`[${parts.find(d => d.type === 'decimal')?.value}]`)
+  const numeral = new RegExp(`[${numerals.join('')}]`, 'g')
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- its guranteed to be defined
-  const _index = (d: string) => index.get(d)!
+  const idx = (d: string) => index.get(d)!
 
-  n = n.trim().replace(_group, '').replace(_decimal, '.').replace(_numeral, _index)
+  n = n.trim().replace(group, '').replace(decimal, '.').replace(numeral, idx)
 
   return n ? +n : NaN
 }

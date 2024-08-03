@@ -91,17 +91,15 @@ function createApplyTo(include, exclude = []) {
 
 const applyToAll = createApplyTo(['**/*.?(c|m)[jt]s?(x)', '**/*.json?(c|5)'])
 const applyToScript = createApplyTo(['**/*.?(c|m)[jt]s?(x)'])
-const applyToJson = createApplyTo(['**/*.json'], ['**/tsconfig.json', '.vscode/settings.json'])
-const applyToJsonc = createApplyTo(['**/*.jsonc', '.vscode/settings.json'])
+const applyToJson = createApplyTo(
+  ['**/*.json'],
+  ['**/tsconfig.json', '.vscode/*.json', '.zed/*.json'],
+)
+const applyToJsonc = createApplyTo(['**/*.jsonc', '.vscode/*.json', '.zed/*.json'])
 const applyToJson5 = createApplyTo(['**/*.json5', '**/tsconfig.json'])
 const applyToJsonC5 = createApplyTo(['**/*.json?(c|5)'])
 const applyToTypescript = createApplyTo(['**/*.?(c|m)ts?(x)'])
-const applyToReact = createApplyTo([
-  '**/*.?(c|m)jsx',
-  '**/*.?(c|m)tsx',
-  '**/use*.?(c|m)js?(x)',
-  '**/use*.?(c|m)ts?(x)',
-])
+const applyToReact = createApplyTo(['**/*.?(c|m)[jt]sx', '**/use*.?(c|m)[jt]s?(x)'])
 const applyToTypescriptReact = createApplyTo(['**/*.?(c|m)tsx', '**/use*.?(c|m)ts?(x)'])
 const applyToVitest = createApplyTo(
   ['**/__tests__/**/*.?(c|m)[jt]s?(x)', '**/*.{test,spec}.?(c|m)[jt]s?(x)'],
@@ -257,6 +255,20 @@ const typescriptConfigs = [
       },
     },
     rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          args: 'after-used',
+          caughtErrors: 'all',
+          ignoreRestSiblings: false,
+          reportUsedIgnorePattern: true,
+          varsIgnorePattern: '^(?!__)_.*|^_$',
+          argsIgnorePattern: '^(?!__)_.*|^_$',
+          caughtErrorsIgnorePattern: '^(?!__)_.*|^_$',
+          destructuredArrayIgnorePattern: '^(?!__)_.*|^_$',
+        },
+      ],
       '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/use-unknown-in-catch-callback-variable': 'warn', // TODO: enable
       '@typescript-eslint/restrict-template-expressions': 'warn', // TODO: enable

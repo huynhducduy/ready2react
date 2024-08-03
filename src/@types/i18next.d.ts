@@ -1,6 +1,6 @@
 import 'i18next'
 
-import defaultLocale from '@/i18n/locales/en.json'
+import type defaultLocale from '@/i18n/locales/en.json'
 import {DEFAULT_NAMESPACE} from '@/i18n/setup'
 
 declare module 'i18next' {

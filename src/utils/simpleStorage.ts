@@ -75,9 +75,7 @@ function remove(key: string, session?: boolean) {
   }
 }
 
-function get<T>(key: string, defaultValue: T, session?: boolean): T
-function get<T>(key: string, defaultValue?: undefined, session?: boolean): T | undefined
-function get<T>(key: string, defaultValue?: T, session?: boolean): T | undefined {
+function get(key: string, defaultValue?: unknown, session?: boolean): unknown {
   const storage = session ? sessionStorage : localStorage
 
   if (typeof storage === 'undefined') {
@@ -86,7 +84,7 @@ function get<T>(key: string, defaultValue?: T, session?: boolean): T | undefined
     const rawValue = storage.getItem(generateKey(key))
     if (rawValue) {
       try {
-        return parse(rawValue) as T
+        return parse(rawValue)
       } catch (error) {
         throw new SimpleStorageError('Get', errorMessageOrUndefined(error), {
           key,

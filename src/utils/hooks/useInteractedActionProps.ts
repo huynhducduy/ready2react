@@ -2,9 +2,10 @@ import {useRef} from 'react'
 
 import useCallback, {type MemoizedCallback} from './useCallback'
 
-export default function useInteractedActionProps<
-  T extends MemoizedCallback<(...args: never[]) => void>,
->(action: T, delay = 200) {
+export default function useInteractedActionProps(
+  action: MemoizedCallback<() => void>,
+  delay = 200,
+) {
   const isInteracted = useRef(false)
 
   const setInteracted = useCallback(() => {

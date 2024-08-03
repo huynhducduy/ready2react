@@ -1,5 +1,5 @@
-const createIdleTimeScheduler = <T extends (...args: never[]) => void>(timeout = 3000) => {
-  const thingsToDo: {execute: T; id: number}[] = []
+const createIdleTimeScheduler = (timeout = 3000) => {
+  const thingsToDo: {execute: () => void; id: number}[] = []
   let isRequestIdleCallbackScheduled = false
   let currentId = 0
 
@@ -41,7 +41,7 @@ const createIdleTimeScheduler = <T extends (...args: never[]) => void>(timeout =
     if (thingsToDo.length > 0) runScheduler()
   }
 
-  const schedule = (thing: T) => {
+  const schedule = (thing: () => void) => {
     const id = currentId++
     thingsToDo.push({
       execute: thing,

@@ -33,11 +33,11 @@ export default function preloadImage(
   }
 
   try {
-    const _img = new Image()
-    _img.src = url
-    _img.fetchPriority = priority
-    if (callback) _img.onload = callback
-  } catch (e) {
+    const img = new Image()
+    img.src = url
+    img.fetchPriority = priority
+    if (callback) img.onload = callback
+  } catch {
     // empty
   }
 }
