@@ -12,7 +12,7 @@ import pluginGitignore from 'eslint-config-flat-gitignore'
 import pluginCssModules from 'eslint-plugin-css-modules'
 import pluginDepend from 'eslint-plugin-depend'
 // import pluginDeprecation from 'eslint-plugin-deprecation'
-import {plugin as exceptionHandling} from 'eslint-plugin-exception-handling'
+import {plugin as pluginExceptionHandling} from 'eslint-plugin-exception-handling'
 import pluginI18next from 'eslint-plugin-i18next'
 import pluginImportX from 'eslint-plugin-import-x'
 import pluginJestDom from 'eslint-plugin-jest-dom'
@@ -194,7 +194,7 @@ const coreConfigs = [
   }),
   ...applyToAll('core/exception-handling', {
     plugins: {
-      'exception-handling': exceptionHandling,
+      'exception-handling': pluginExceptionHandling,
     },
     rules: {
       // 'exception-handling/no-unhandled': 'error',
@@ -395,7 +395,7 @@ const testConfigs = [
       'no-only-tests': pluginNoOnlyTests,
     },
     rules: {
-      'no-only-tests/no-only-tests': 'error',
+      'no-only-tests/no-only-tests': 'error', // TODO: check this rule
     },
   }),
   ...applyToVitest('testing/vitest/formatting', compat.extends('plugin:jest-formatting/strict')),
@@ -404,7 +404,7 @@ const testConfigs = [
 const config = tsEslint.config(
   pluginGitignore({
     root: true,
-    files: ['.gitignore', '.eslintignore'],
+    files: ['.gitignore'],
     strict: false,
   }),
   {

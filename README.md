@@ -37,3 +37,16 @@ Create a `.env.production(.local?)` based on `.env.example`
 ```sh
 pnpm build
 ```
+
+## Notes
+
+About SWC config: SWC (`@swc/core`) must share the same version accross the app. Package that use SWC:
+
+```txt
+@swc-jotai/debug-label
+@swc-jotai/react-refresh
+@swc/plugin-react-remove-properties
+@vitejs/plugin-react-swc
+```
+
+`@swc/core` is currently pinned to `1.6.13` in `package.json`
