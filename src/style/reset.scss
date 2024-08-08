@@ -34,7 +34,7 @@ body {
     user-select: none;
 
     /* Disabled bounce, overscroll (pull) to refresh; disable swipe to navigate in PWA */
-    overscroll-behavior: none none;
+    overscroll-behavior: none;
 
     /* Disable link popup in PWA */
     -webkit-touch-callout: none;

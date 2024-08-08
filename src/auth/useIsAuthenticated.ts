@@ -1,6 +1,5 @@
 import {atom, useAtom, useAtomValue, useSetAtom, useStore} from 'jotai'
-
-import useCallback from '@/utils/hooks/useCallback'
+import {useCallback} from 'react'
 
 import isAuthenticated from './isAuthenticated'
 

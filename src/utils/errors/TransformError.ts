@@ -1,3 +1,5 @@
+import type {ReadonlyDeep} from 'type-fest'
+
 import ErrorWithMetadata from './ErrorWithMetadata'
 
 interface TransformErrorData {
@@ -7,7 +9,12 @@ interface TransformErrorData {
 }
 
 export default class TransformError extends ErrorWithMetadata {
-  constructor(name: string, message: string, cause?: unknown, errors?: TransformErrorData[]) {
+  constructor(
+    name: string,
+    message: string,
+    cause?: unknown,
+    errors?: ReadonlyDeep<TransformErrorData[]>,
+  ) {
     super('TransformError', name, message, {errors}, {cause})
     this.permanent()
   }

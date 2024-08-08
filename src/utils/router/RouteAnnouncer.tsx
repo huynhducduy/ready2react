@@ -5,6 +5,8 @@ import {memo, useEffect, useRef} from 'react'
 import {TITLE} from '@/constants/config'
 import {LOADING} from '@/constants/magicStrings'
 
+const WAIT_MS = 100
+
 export default memo(function RouteAnnouncer() {
   const {subscribe} = useRouter()
   const matches = useMatches()
@@ -26,7 +28,7 @@ export default memo(function RouteAnnouncer() {
         const messsage = `Navigated to ${currentTitle}`
         console.log(messsage)
         announce(messsage, 'polite')
-      }, 100)
+      }, WAIT_MS)
     }
 
     const unsubscribe = subscribe('onResolved', info => {

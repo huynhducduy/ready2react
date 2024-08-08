@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-readonly-parameter-types -- too complicated */
 import {
   type DefinedInitialDataOptions,
   type SetDataOptions,
@@ -170,3 +171,5 @@ export function createQueryUtils<QueryConfig extends Record<string, QueryConfigD
     getSetQueryParams,
   }
 }
+
+/* eslint-enable @typescript-eslint/prefer-readonly-parameter-types -- too complicated */

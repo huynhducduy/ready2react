@@ -1,4 +1,6 @@
-const createIdleTimeScheduler = (timeout = 3000) => {
+const DEFAULT_TIMEOUT = 3000
+
+const createIdleTimeScheduler = (timeout = DEFAULT_TIMEOUT) => {
   const thingsToDo: {execute: () => void; id: number}[] = []
   let isRequestIdleCallbackScheduled = false
   let currentId = 0
@@ -11,6 +13,7 @@ const createIdleTimeScheduler = (timeout = 3000) => {
 
     if ('requestIdleCallback' in window) {
       // Wait at most two seconds before processing events.
+
       requestIdleCallback(process, {timeout})
     } else {
       process()

@@ -5,6 +5,10 @@ import {createQueryConfig, createQueryUtils} from '@/utils/query/query'
 
 const queryConfig = createQueryConfig({})
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers -- its magic
+const TIME_24_HOURS = 1000 * 60 * 60 * 24
+const RETRY_TIMES = 3
+
 declare module '@tanstack/react-query' {
   interface Register {
     mutationMeta: {
@@ -19,18 +23,18 @@ export function createQueryClient() {
     defaultOptions: {
       queries: {
         throwOnError: true,
-        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+        gcTime: TIME_24_HOURS,
         retry(failureCount, error) {
           if (isPermanentError(error)) return false
-          return failureCount < 3
+          return failureCount < RETRY_TIMES
         },
       },
       mutations: {
         throwOnError: false,
-        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+        gcTime: TIME_24_HOURS,
         retry(failureCount, error) {
           if (isPermanentError(error)) return false
-          return failureCount < 3
+          return failureCount < RETRY_TIMES
         },
       },
     },

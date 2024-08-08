@@ -21,7 +21,7 @@ import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginNoBarrelFiles from 'eslint-plugin-no-barrel-files'
 import pluginNoOnlyTests from 'eslint-plugin-no-only-tests'
 import pluginNoRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
-import pluginNoSecrets from 'eslint-plugin-no-secrets'
+import pluginNoSecrets from 'eslint-plugin-no-secrets' // TODO: Leave this functionality for another step
 // eslint-disable-next-line import-x/default, import-x/no-named-as-default, import-x/no-named-as-default-member -- import-x error
 import pluginNoUseExtendNative from 'eslint-plugin-no-use-extend-native'
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
@@ -57,9 +57,6 @@ const reactUseStaticHooks = {
 
 // TODO: add all react-use and other hooks libraries to additionalHooks
 const reactUseAdditionalHooks = ['useIsomorphicLayoutEffect']
-
-// const reactNativePlugins = ['react-native']
-// const reactNativeExtends = ['plugin:react-native/all']
 
 //------------------------------------------------------------------------------
 
@@ -100,6 +97,7 @@ const applyToJson5 = createApplyTo(['**/*.json5', '**/tsconfig.json'])
 const applyToJsonC5 = createApplyTo(['**/*.json?(c|5)'])
 const applyToTypescript = createApplyTo(['**/*.?(c|m)ts?(x)'])
 const applyToReact = createApplyTo(['**/*.?(c|m)[jt]sx', '**/use*.?(c|m)[jt]s?(x)'])
+const applyToJavascriptReact = createApplyTo(['**/*.?(c|m)tsx', '**/use*.?(c|m)js?(x)'])
 const applyToTypescriptReact = createApplyTo(['**/*.?(c|m)tsx', '**/use*.?(c|m)ts?(x)'])
 const applyToVitest = createApplyTo(
   ['**/__tests__/**/*.?(c|m)[jt]s?(x)', '**/*.{test,spec}.?(c|m)[jt]s?(x)'],
@@ -250,11 +248,95 @@ const typescriptConfigs = [
   ...applyToTypescript('typescript', {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
+      // Our own rules set
+      '@typescript-eslint/consistent-type-exports': [
+        'error',
+        {fixMixedExportsWithInlineTypeSpecifier: false},
+      ],
+      '@typescript-eslint/promise-function-async': ['error'],
+      'no-loop-func': 'off',
+      '@typescript-eslint/no-loop-func': 'error',
+      'no-magic-numbers': 'off',
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        {
+          ignore: [
+            0,
+            0.1,
+            -0.1,
+            1,
+            -1,
+            2,
+            -2,
+            '0n',
+            '-0n',
+            '1n',
+            '-1n',
+            '2n',
+            '-2n',
+            Infinity,
+            NaN,
+          ],
+          ignoreEnums: true,
+          ignoreNumericLiteralTypes: true,
+          ignoreArrayIndexes: true,
+          ignoreTypeIndexes: true,
+          enforceConst: true,
+          detectObjects: true,
+        },
+      ],
+      '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'error',
+      '@typescript-eslint/no-unnecessary-qualifier': 'error',
+      '@typescript-eslint/no-useless-empty-export': 'error',
+      '@typescript-eslint/prefer-readonly': ['error'],
+      '@typescript-eslint/prefer-readonly-parameter-types': [
+        'error',
+        {
+          checkParameterProperties: true,
+          treatMethodsAsReadonly: true,
+          ignoreInferredTypes: true,
+          allow: [
+            {from: 'package', package: 'react', name: 'Ref'},
+            {from: 'package', package: 'react', name: 'RefCallback'},
+            {from: 'package', package: 'react', name: 'RefObject'},
+            {from: 'package', package: 'react', name: 'ReadonlyPropsWithChildren'},
+            {from: 'package', package: '@tanstack/react-router', name: 'Router'},
+            {from: 'lib', name: 'MessageEvent'},
+          ],
+        },
+      ],
+      '@typescript-eslint/no-restricted-types': [
+        'error',
+        {
+          types: {
+            // add a custom message, and tell the plugin how to fix it
+            PropsWithChildren: {
+              message: 'Use `ReadonlyPropsWithChildren` instead.',
+              fixWith: 'ReadonlyPropsWithChildren',
+            },
+          },
+        },
+      ],
+      'no-restricted-imports': 'off',
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'react',
+              importNames: ['PropsWithChildren'],
+              message: 'Use `ReadonlyPropsWithChildren` instead.',
+              allowTypeImports: false,
+            },
+          ],
+        },
+      ],
+      // Extends or disable rules of the presets
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -283,7 +365,7 @@ const reactConfigs = [
     fixupConfigRules(compat.extends('plugin:react-hooks/recommended')),
   ),
   ...applyToReact('react/a11y', {
-    ...pluginJsxA11y.flatConfigs.recommended,
+    ...pluginJsxA11y.flatConfigs.strict,
     settings: {
       'jsx-a11y': {
         polymorphicPropName: 'as',
@@ -292,11 +374,22 @@ const reactConfigs = [
         },
       },
     },
-  }), // How about pluginJsxA11y.flatConfigs.strict?
+  }),
   ...applyToReact('react/query', pluginQuery.configs['flat/recommended']),
-  ...applyToReact('react/dom', pluginReact.configs.dom), // Exclude react in server?
-  ...applyToReact('react/x', {
+  ...applyToReact('react/dom', pluginReact.configs.dom), // TODO: Exclude react in server?
+  ...applyToJavascriptReact('react/x-javascript', {
+    ...pluginReact.configs['recommended'],
+  }),
+  ...applyToTypescriptReact('react/x-typescript', {
     ...pluginReact.configs['recommended-type-checked'],
+  }),
+  ...applyToReact('react/x-hooks', {
+    // ...pluginReact.configs['hooks-extra'], // TODO: enable this when available in v2.0.0 instead of manually set rules
+    rules: {
+      '@eslint-react/hooks-extra/prefer-use-state-lazy-initialization': 'error',
+    },
+  }),
+  ...applyToReact('react/x-settings', {
     settings: {
       'react-x': {
         polymorphicPropName: 'as',
@@ -312,10 +405,16 @@ const reactConfigs = [
       'react-refresh': pluginReactRefresh,
     },
     rules: {
-      'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+          checkJS: true,
+        },
+      ],
     },
   }),
-  ...applyToReact('react/refresh', {
+  ...applyToReact('react/compiler', {
     plugins: {
       'react-compiler': pluginReactCompiler,
     },
@@ -373,17 +472,28 @@ const reactConfigs = [
   }),
 ]
 
+// const reactNativeConfigs = [
+//   ...applyToReactNative('react-native/dom', pluginReactNative.configs.all),
+//   ...applyToReactNative('react-native/off-dom', pluginReact.configs['off-dom'])
+// ]
+
 const testConfigs = [
   ...applyToVitestNotReact('testing/dom', compat.extends('plugin:testing-library/dom')),
   ...applyToVitestReact(
     'testing/react',
     fixupConfigRules(compat.extends('plugin:testing-library/react')),
   ),
+  ...applyToVitest('testing/less-strict', {
+    rules: {
+      'no-magic-numbers': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
+    },
+  }),
   ...applyToVitest('testing/vitest', {
     plugins: {
       vitest: pluginVitest,
     },
-    rules: pluginVitest.configs.recommended.rules,
+    rules: pluginVitest.configs.all.rules,
     settings: {
       vitest: {
         typecheck: true,
@@ -420,7 +530,7 @@ const config = tsEslint.config(
     strict: false,
   }),
   {
-    ignores: ['public/*', '**/*.gen.ts'],
+    ignores: ['public/*', '**/*.gen.ts', 'vitest.config.ts.timestamp*'],
   },
   ...coreConfigs,
   ...jsonConfigs,

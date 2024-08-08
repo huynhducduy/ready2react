@@ -6,7 +6,9 @@ import {routeTree} from './routeTree.gen'
 import RouterErrorComponent from './views/Error/RouterErrorComponent'
 import NotFound from './views/NotFound/NotFound'
 
-export function createRouter({queryClient}: {queryClient: QueryClient}) {
+const DEFAULT_PRELOAD_DELAY = 50
+
+export function createRouter({queryClient}: Readonly<{queryClient: QueryClient}>) {
   return createReactRouter({
     transformer: {stringify, parse},
     routeTree,
@@ -25,7 +27,7 @@ export function createRouter({queryClient}: {queryClient: QueryClient}) {
       hydrate(queryClient, dehydrated.queryClientState)
     },
     defaultPreload: 'intent',
-    defaultPreloadDelay: 50,
+    defaultPreloadDelay: DEFAULT_PRELOAD_DELAY,
     defaultPreloadStaleTime: 0, // leverage cache control of react-query instead: we don't want loader calls to ever be stale as this will ensure that the loader is always called when the route is preloaded or visited
     defaultNotFoundComponent: NotFound,
     defaultErrorComponent: RouterErrorComponent,

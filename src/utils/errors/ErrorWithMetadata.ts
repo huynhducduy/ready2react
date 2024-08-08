@@ -7,8 +7,8 @@ export default class ErrorWithMetadata extends MaybePermanentError {
     type: `${string}Error`,
     name: string,
     message?: string,
-    readonly metadata?: ErrorMetadata,
-    options?: ErrorOptions,
+    readonly metadata?: Readonly<ErrorMetadata>,
+    options?: Readonly<ErrorOptions>,
   ) {
     super(message, options)
     this.name = `${type}${name ? '(' + name + ')' : ''}`

@@ -39,6 +39,8 @@ const fontaineOptions = {
   sourcemap: true,
 }
 
+const SVG_FLOAT_PRECISION = 2
+
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const dotEnv = loadEnv(mode, process.cwd(), '')
@@ -62,9 +64,171 @@ export default defineConfig(({mode}) => {
   const inTestOrDevMode = ['test', 'benchmark', 'development'].includes(mode)
 
   const shouldDisableSentry = process.env.DISABLE_SENTRY === 'true' || inTestOrDevMode
+  // END: Verify the environment variables
 
-  if (!shouldDisableSentry && !process.env.SENTRY_AUTH_TOKEN) {
-    throw new Error('SENTRY_AUTH_TOKEN is required')
+  const plugins = [
+    {
+      ...optimizeLocales.vite({
+        locales: ['en-US'],
+      }),
+      enforce: 'pre' as const,
+    },
+    lqip(), // switch o blurhash?
+    dynamicImport(),
+    preload(),
+    robots({}),
+    UnheadVite(),
+    // Tree-shaking for sentry https://docs.sentry.io/platforms/javascript/guides/react/configuration/tree-shaking/
+    replace({
+      preventAssignment: false,
+      __SENTRY_DEBUG__: mode === 'production' ? false : true,
+      // __SENTRY_TRACING__: false,
+      __RRWEB_EXCLUDE_IFRAME__: true,
+      __RRWEB_EXCLUDE_SHADOW_DOM__: true,
+      // __SENTRY_EXCLUDE_REPLAY_WORKER__: true,
+    }),
+    tsconfigPaths(),
+    partytownVite({
+      dest: path.join(__dirname, 'dist', '~partytown'),
+    }),
+    TurboConsole({
+      /* options here */
+    }),
+    createHtmlPlugin({
+      minify: true,
+      /**
+       * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
+       */
+      entry: 'src/main.tsx',
+      /**
+       * Data that needs to be injected into the index.html ejs template
+       */
+      inject: {
+        data: {
+          title: process.env.VITE_APP_TITLE,
+          description: process.env.VITE_APP_DESCRIPTION,
+          ogImage: '/og.jpg',
+          gtagTagId: 'AW-16526181924',
+        },
+        tags: [
+          /**
+           * Inject <div id='root'/> to body of `index.html`
+           */
+          {
+            injectTo: 'body-prepend',
+            tag: 'div',
+            attrs: {
+              id: 'root',
+            },
+          },
+        ],
+      },
+    }),
+    //// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // MillionLint.vite(),
+    // SWC React
+    // react({
+    //   plugins: [
+    //     ['@swc-jotai/debug-label', {}],
+    //     ['@swc-jotai/react-refresh', {}],
+    //     !inTestOrDevMode
+    //       ? [
+    //           '@swc/plugin-react-remove-properties',
+    //           {
+    //             // The regexes defined here are processed in Rust so the syntax is different from
+    //             // JavaScript `RegExp`s. See https://docs.rs/regex.
+    //             properties: ['^data-testid$', '^data-test-id$'], // Remove `data-testid` and `data-test-id`
+    //           },
+    //         ]
+    //       : false,
+    //   ].filter(Boolean) as [string, Record<string, unknown>][], // Don't know why typescript cannot infer the type here
+    // }),
+    react({
+      babel: {
+        plugins: [
+          [
+            'babel-plugin-react-compiler',
+            {
+              // compilationMode: 'annotation',
+            },
+          ],
+          ['jotai/babel/plugin-debug-label', {}],
+          ['jotai/babel/plugin-react-refresh', {}],
+          [
+            'react-remove-properties',
+            {properties: ['data-testid', 'data-test-id', 'data-testId', 'data-testID']},
+          ],
+        ],
+      },
+    }),
+    // process.env.VITEST
+    //   ? undefined
+    //   : pluginChecker({
+    //       typescript: true,
+    //       eslint: {
+    //         lintCommand: packageJson.scripts['base:lint:script'],
+    //         useFlatConfig: true,
+    //       },
+    //       // TODO: fix stylelint error
+    //       // stylelint: {
+    //       //   lintCommand: packageJson.scripts['base:lint:style'],
+    //       // },
+    //       overlay: {
+    //         initialIsOpen: false,
+    //       },
+    //     }),
+    svgr({
+      svgrOptions: {
+        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+        svgoConfig: {
+          floatPrecision: SVG_FLOAT_PRECISION,
+        },
+      },
+    }),
+    ViteImageOptimizer({
+      cache: true,
+      cacheLocation: './.imageoptimizercache',
+    }),
+    TanStackRouterVite(),
+    mkcert(),
+    obfuscator({
+      sourceMap: true,
+    }),
+    inspectorServer(),
+    compression(), // Useful when serve dist as static files (https://nginx.org/en/docs/http/ngx_http_gzip_static_module.html), but not when serve dist with a backend (since the backend should handle compression)
+    optimizeCssModules(),
+    FontaineTransform.vite(fontaineOptions),
+    // NOTE: enable this if you need support for legacy browsers
+    // Legacy plugin need extra setup for CSP (Content Security Policy)
+    // legacy({
+    //   // `terser` package must be available in the dependencies
+    //   targets: ['defaults', 'not IE 11'],
+    // }),
+  ]
+
+  // Put the Sentry vite plugin after all other plugins
+  if (!shouldDisableSentry) {
+    if (!process.env.SENTRY_AUTH_TOKEN) {
+      throw new Error('SENTRY_AUTH_TOKEN is required')
+    }
+
+    plugins.push(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- some how typescript unable to infer the type correctly
+      sentryVitePlugin({
+        // release: '',
+        applicationKey: process.env.VITE_APP_NAME,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: '<REPLACE_THIS>',
+        project: '<REPLACE_THIS>',
+        reactComponentAnnotation: {
+          enabled: true,
+        },
+        telemetry: false,
+        _experiments: {
+          injectBuildInformation: true,
+        },
+      }),
+    )
   }
 
   return {
@@ -93,162 +257,7 @@ export default defineConfig(({mode}) => {
     json: {
       stringify: true,
     },
-    plugins: [
-      lqip(), // switch o blurhash?
-      dynamicImport(),
-      preload(),
-      robots({}),
-      UnheadVite(),
-      // Tree-shaking for sentry https://docs.sentry.io/platforms/javascript/guides/react/configuration/tree-shaking/
-      replace({
-        preventAssignment: false,
-        __SENTRY_DEBUG__: mode === 'production' ? false : true,
-        // __SENTRY_TRACING__: false,
-        __RRWEB_EXCLUDE_IFRAME__: true,
-        __RRWEB_EXCLUDE_SHADOW_DOM__: true,
-        // __SENTRY_EXCLUDE_REPLAY_WORKER__: true,
-      }),
-      tsconfigPaths(),
-      partytownVite({
-        dest: path.join(__dirname, 'dist', '~partytown'),
-      }),
-      TurboConsole({
-        /* options here */
-      }),
-      createHtmlPlugin({
-        minify: true,
-        /**
-         * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
-         */
-        entry: 'src/main.tsx',
-        /**
-         * Data that needs to be injected into the index.html ejs template
-         */
-        inject: {
-          data: {
-            title: process.env.VITE_APP_TITLE,
-            description: process.env.VITE_APP_DESCRIPTION,
-            ogImage: '/og.jpg',
-            gtagTagId: 'AW-16526181924',
-          },
-          tags: [
-            /**
-             * Inject <div id='root'/> to body of `index.html`
-             */
-            {
-              injectTo: 'body-prepend',
-              tag: 'div',
-              attrs: {
-                id: 'root',
-              },
-            },
-          ],
-        },
-      }),
-      //// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      // MillionLint.vite(),
-      // SWC React
-      // react({
-      //   plugins: [
-      //     ['@swc-jotai/debug-label', {}],
-      //     ['@swc-jotai/react-refresh', {}],
-      //     !inTestOrDevMode
-      //       ? [
-      //           '@swc/plugin-react-remove-properties',
-      //           {
-      //             // The regexes defined here are processed in Rust so the syntax is different from
-      //             // JavaScript `RegExp`s. See https://docs.rs/regex.
-      //             properties: ['^data-testid$', '^data-test-id$'], // Remove `data-testid` and `data-test-id`
-      //           },
-      //         ]
-      //       : false,
-      //   ].filter(Boolean) as [string, Record<string, unknown>][], // Don't know why typescript cannot infer the type here
-      // }),
-      react({
-        babel: {
-          plugins: [
-            [
-              'babel-plugin-react-compiler',
-              {
-                // compilationMode: 'annotation',
-              },
-            ],
-            ['jotai/babel/plugin-debug-label', {}],
-            ['jotai/babel/plugin-react-refresh', {}],
-            [
-              'react-remove-properties',
-              {properties: ['data-testid', 'data-test-id', 'data-testId', 'data-testID']},
-            ],
-          ],
-        },
-      }),
-      // process.env.VITEST
-      //   ? undefined
-      //   : pluginChecker({
-      //       typescript: true,
-      //       eslint: {
-      //         lintCommand: packageJson.scripts['base:lint:script'],
-      //         useFlatConfig: true,
-      //       },
-      //       // TODO: fix stylelint error
-      //       // stylelint: {
-      //       //   lintCommand: packageJson.scripts['base:lint:style'],
-      //       // },
-      //       overlay: {
-      //         initialIsOpen: false,
-      //       },
-      //     }),
-      // NOTE: enable this if you need support for legacy browsers
-      // Legacy plugin need extra setup for CSP (Content Security Policy)
-      // legacy({
-      //   // `terser` package must be available in the dependencies
-      //   targets: ['defaults', 'not IE 11'],
-      // }),
-      svgr({
-        svgrOptions: {
-          plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
-          svgoConfig: {
-            floatPrecision: 2,
-          },
-        },
-      }),
-      ViteImageOptimizer({
-        cache: true,
-        cacheLocation: './.imageoptimizercache',
-      }),
-      TanStackRouterVite(),
-      mkcert(),
-      {
-        ...optimizeLocales.vite({
-          locales: ['en-US'],
-        }),
-        enforce: 'pre',
-      },
-      obfuscator({
-        sourceMap: true,
-      }),
-      inspectorServer(),
-      compression(), // Useful when serve dist as static files (https://nginx.org/en/docs/http/ngx_http_gzip_static_module.html), but not when serve dist with a backend (since the backend should handle compression)
-      optimizeCssModules(),
-      FontaineTransform.vite(fontaineOptions),
-      // Put the Sentry vite plugin after all other plugins
-      shouldDisableSentry
-        ? false
-        : sentryVitePlugin({
-            // release: '',
-            applicationKey: process.env.VITE_APP_NAME,
-            authToken: process.env.VITE_APP_SENTRY_AUTH_TOKEN,
-            org: '<REPLACE_THIS>',
-            project: '<REPLACE_THIS>',
-            reactComponentAnnotation: {
-              enabled: true,
-            },
-            telemetry: false,
-            _experiments: {
-              injectBuildInformation: true,
-            },
-          }),
-    ].filter(Boolean),
+    plugins,
     resolve: {
       alias: [{find: '@', replacement: '/src'}],
     },

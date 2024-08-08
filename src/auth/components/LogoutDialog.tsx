@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import {memo, type PropsWithChildren, useCallback} from 'react'
+import {memo, type MemoizedCallback, type ReadonlyPropsWithChildren, useCallback} from 'react'
 import {
   Button,
   Dialog,
@@ -11,15 +11,13 @@ import {
 } from 'react-aria-components'
 import {useLatest} from 'react-use'
 
-import type {MemoizedCallback} from '@/utils/hooks/useCallback'
-
 import style from './LogoutDialog.module.scss'
 
 interface Props {
   onLogout?: MemoizedCallback<() => void>
 }
 
-export default memo(function LogoutDialog(props: PropsWithChildren<Props>) {
+export default memo(function LogoutDialog(props: ReadonlyPropsWithChildren<Props>) {
   const latestOnLogout = useLatest(props.onLogout)
 
   const onLogout = useCallback((action: () => void) => {

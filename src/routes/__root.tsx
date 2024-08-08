@@ -12,7 +12,7 @@ import RouteAnnouncer from '@/utils/router/RouteAnnouncer'
 
 const TanStackRouterDevtools = import.meta.env.PROD
   ? () => null // Render nothing in production
-  : lazy(() =>
+  : lazy(async () =>
       // Lazy load in development
       import('@tanstack/router-devtools').then(res => ({
         default: res.TanStackRouterDevtools,
@@ -27,7 +27,7 @@ function RootRoute() {
     <>
       <ScrollRestoration />
       <RouteAnnouncer />
-      <RouterProvider navigate={(to: string) => router.navigate({to})}>
+      <RouterProvider navigate={async (to: string) => router.navigate({to})}>
         <Outlet />
         <Suspense>
           <TanStackRouterDevtools initialIsOpen={false} />

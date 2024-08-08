@@ -1,30 +1,29 @@
 import clsx from 'clsx'
-import {type ForwardedRef, type PropsWithChildren, useRef} from 'react'
+import {type ReadonlyPropsWithChildren, type Ref, useRef} from 'react'
 import {type AriaButtonOptions, useButton} from 'react-aria'
 import {ButtonContext, useContextProps} from 'react-aria-components'
 
 import style from './PrimaryButton.module.scss'
 
-type Props = PropsWithChildren<
+type Props = ReadonlyPropsWithChildren<
   {
     size?: 'lg' | 'md' | 'sm'
     className?: string
     isPending?: boolean
     showPendingIndicator?: boolean
   } & AriaButtonOptions<'button'>
->
+> & {
+  readonly ref?: Ref<HTMLButtonElement>
+}
 
-export default function PrimaryButton(
-  {showPendingIndicator = true, ...props}: Props,
-  ref?: ForwardedRef<HTMLButtonElement>,
-) {
+export default function PrimaryButton({ref, showPendingIndicator = true, ...props}: Props) {
   const emptyRef = useRef(null)
 
   const [newProps, newRef] = useContextProps(
     {
       ...props,
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- || is the correct logic
-      isDisabled: props.isDisabled || props.isPending,
+      isDisabled: (props.isDisabled || props.isPending) ?? false,
     },
     ref ?? emptyRef,
     ButtonContext,

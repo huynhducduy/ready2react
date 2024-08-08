@@ -11,6 +11,8 @@ import {
 
 import {APP_NAME, DEBUG, MODE} from './constants/config'
 
+export const SENTRY_MAX_DEPTH = 3
+
 // TODO: Shared Environment implementation
 if (!DEBUG) {
   init({
@@ -46,6 +48,7 @@ if (!DEBUG) {
     transport: makeBrowserOfflineTransport(makeFetchTransport),
     transportOptions: {}, // https://docs.sentry.io/platforms/javascript/guides/react/best-practices/offline-caching/
     // ignoreTransactions: [] // TODO: add more ignore transactions
+    normalizeDepth: SENTRY_MAX_DEPTH,
   })
 }
 

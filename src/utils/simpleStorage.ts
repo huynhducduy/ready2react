@@ -12,7 +12,12 @@ const sessionStorage = window.sessionStorage
 /* eslint-enable ssr-friendly/no-dom-globals-in-module-scope -- END */
 
 class SimpleStorageError extends ErrorWithMetadata {
-  constructor(name: string, message?: string, metadata?: ErrorMetadata, options?: ErrorOptions) {
+  constructor(
+    name: string,
+    message?: string,
+    metadata?: Readonly<ErrorMetadata>,
+    options?: Readonly<ErrorOptions>,
+  ) {
     super('SimpleStorageError', name, message, metadata, options)
     this.permanent()
   }

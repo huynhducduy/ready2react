@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
@@ -15,15 +16,16 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": true,
     // END Interop constraints
     // Type checking
     "strict": true,
     "strictNullChecks": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
     // "noImplicitReturns": true, // Way too strict and not worth it?
-    // "noUncheckedIndexedAccess": true, // Way too strict and not worth it?
-    // "exactOptionalPropertyTypes": true, // Way too strict and not worth it?
+    "exactOptionalPropertyTypes": true, // TODO: consider enabling this, but way too strict and not worth it?
     // END Type checking
     // Handled in eslint: disable them to prevent error duplication
     "allowUnreachableCode": true, // rule name: no-unreachable
@@ -51,6 +53,6 @@
     },
     "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals", "gtag.js"]
   },
-  "exclude": ["node_modules/*", "dist/*", "**/~partytown/*", "coverage/*"],
-  "include": ["**/*"]
+  "exclude": ["vitest.config.ts.timestamp*"],
+  "include": ["src/**/*", "*"]
 }

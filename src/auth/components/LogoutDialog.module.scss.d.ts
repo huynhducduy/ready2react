@@ -1,0 +1,10 @@
+export declare const Action: string
+export declare const Cancel: string
+export declare const Description: string
+export declare const Dialog: string
+export declare const Heading: string
+export declare const IsEntering: string
+export declare const IsExiting: string
+export declare const Modal: string
+export declare const Ok: string
+export declare const Overlay: string

@@ -14,9 +14,13 @@ import type {Router} from '@/router'
 const ERROR_MESSAGE =
   'Something went wrong while trying to login with Google. Please try again. If the problem persists, please contact support.'
 
+interface Props {
+  readonly router: Router
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- temp
-function OneTap({router}: {router: Router}) {
-  const handleOnSuccess = (credentialResponse: CredentialResponse) => {
+function OneTap({router}: Props) {
+  const handleOnSuccess = (credentialResponse: Readonly<CredentialResponse>) => {
     if (!credentialResponse.credential) {
       toast.error(ERROR_MESSAGE)
     }
@@ -59,7 +63,7 @@ function OneTap({router}: {router: Router}) {
   return null
 }
 
-export default memo(function GoogleOneTapLogin({router}: {router: Router}) {
+export default memo(function GoogleOneTapLogin({router}: Props) {
   const isAuthenticated = useIsAuthenticatedValue()
 
   if (isAuthenticated) return

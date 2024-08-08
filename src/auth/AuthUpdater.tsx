@@ -5,7 +5,11 @@ import {type Router} from '@/router'
 import isAuthenticatedPubSubChannel from './isAuthenticatedPubSubChannel'
 import {useGetIsAuthenticated, useSetIsAuthenticated} from './useIsAuthenticated'
 
-export default memo(function AuthUpdater({router}: {router: Router}) {
+interface Props {
+  readonly router: Router
+}
+
+export default memo(function AuthUpdater({router}: Props) {
   const setIsAuthenticated = useSetIsAuthenticated()
   const getIsAuthenticated = useGetIsAuthenticated()
 

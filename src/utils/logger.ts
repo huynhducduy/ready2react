@@ -1,5 +1,8 @@
 import {captureException, captureMessage, setContext, type SeverityLevel} from '@sentry/react'
 import {stringify} from 'devalue'
+import type {ReadonlyDeep} from 'type-fest'
+
+import {SENTRY_MAX_DEPTH} from '@/instrument'
 
 import {isUserFriendlyError} from './errors/UserFriendlyError'
 import isObjectDepthExceed from './isObjectDepthExceed'
@@ -8,8 +11,8 @@ export type ErrorMetadata = Record<Exclude<string, 'type' | 'TYPE'>, unknown>
 
 const logError = function (
   err: unknown,
-  extra?: Record<Exclude<string, 'type' | 'TYPE'>, unknown>,
-  hint?: Record<string, unknown>,
+  extra?: Readonly<Record<Exclude<string, 'type' | 'TYPE'>, unknown>>,
+  hint?: Readonly<Record<string, unknown>>,
 ) {
   // If the error is a UserFriendlyError, the cause should be logged, not the error itself.
   const error = isUserFriendlyError(err) ? err.cause : err
@@ -20,7 +23,7 @@ const logError = function (
   ;(function logMetadata() {
     // @ts-expect-error error can be anything
     if ('metadata' in error) {
-      const depthExceeded = isObjectDepthExceed(error.metadata, 3)
+      const depthExceeded = isObjectDepthExceed(error.metadata, SENTRY_MAX_DEPTH)
 
       if (!depthExceeded) {
         try {
@@ -60,7 +63,7 @@ const logError = function (
 
 const logMessage = function (
   message: string,
-  extra?: Record<Exclude<string, 'type' | 'TYPE'>, unknown>,
+  extra?: Readonly<Record<Exclude<string, 'type' | 'TYPE'>, unknown>>,
   level: SeverityLevel = 'debug',
 ) {
   console.debug(message)
@@ -70,7 +73,7 @@ const logMessage = function (
 
 const logEvent = function (
   eventName: Gtag.EventNames | (string & NonNullable<unknown>),
-  eventParams?: Gtag.ControlParams | Gtag.EventParams | Gtag.CustomParams,
+  eventParams?: ReadonlyDeep<Gtag.ControlParams | Gtag.EventParams | Gtag.CustomParams>,
 ) {
   try {
     window.gtag('event', eventName, eventParams)

@@ -13,6 +13,7 @@ export default defineConfig(configEnv =>
         isolate: false,
         css: false,
         passWithNoTests: true,
+        globals: true,
         unstubGlobals: true,
         environment: 'happy-dom',
         environmentMatchGlobs: [

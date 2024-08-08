@@ -1,5 +1,5 @@
 export default function preloadImage(
-  url: string | string[],
+  url: string | readonly string[],
   priority = 'low',
   strategy: 'sequential' | 'parallel' = 'sequential',
   callback?: () => void,

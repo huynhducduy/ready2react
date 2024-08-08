@@ -8,15 +8,15 @@ test('useIsChange with dependency that change', () => {
     initialProps: [{}],
   })
 
-  expect(useIsChangedHook.current).toBe(true)
+  expect(useIsChangedHook.current).toBeTruthy()
 
   rerender([{}])
 
-  expect(useIsChangedHook.current).toBe(true)
+  expect(useIsChangedHook.current).toBeTruthy()
 
   rerender([{}])
 
-  expect(useIsChangedHook.current).toBe(true)
+  expect(useIsChangedHook.current).toBeTruthy()
 })
 
 test("useIsChange with dependency that don't change", () => {
@@ -24,13 +24,13 @@ test("useIsChange with dependency that don't change", () => {
     initialProps: [1],
   })
 
-  expect(useIsChangedHook.current).toBe(true)
+  expect(useIsChangedHook.current).toBeTruthy()
 
   rerender([1])
 
-  expect(useIsChangedHook.current).toBe(false)
+  expect(useIsChangedHook.current).toBeFalsy()
 
   rerender([1])
 
-  expect(useIsChangedHook.current).toBe(false)
+  expect(useIsChangedHook.current).toBeFalsy()
 })

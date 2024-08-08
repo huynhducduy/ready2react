@@ -1,4 +1,4 @@
-import type UnionToTupleWithoutOrder from '@/utils/types/UnionToTupleWithoutOrder'
+import type {UnionToTupleWithoutOrder} from '@/utils/types/UnionToTupleWithoutOrder'
 
 interface Locale {
   [index: string]: string | Locale
@@ -7,8 +7,8 @@ interface Locale {
 type LocaleBundle = Record<string, () => Promise<{default: Locale}>>
 
 const locales = {
-  en: () => import('./en.json'),
-  vi: () => import('./vi.json'),
+  en: async () => import('./en.json'),
+  vi: async () => import('./vi.json'),
 } satisfies LocaleBundle
 
 export type AvailableLocale = keyof typeof locales

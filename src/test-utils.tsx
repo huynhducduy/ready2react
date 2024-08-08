@@ -3,14 +3,15 @@ import type {ReactNode} from 'react'
 import {act} from 'react'
 import {hydrateRoot} from 'react-dom/client'
 import {renderToString} from 'react-dom/server'
+import type {ReadonlyDeep} from 'type-fest'
 import {vi} from 'vitest'
 
 export const renderHookServer = <Hook extends () => unknown>(
-  useHook: Hook,
+  useHook: Readonly<Hook>,
   {
     wrapper: Wrapper,
   }: {
-    wrapper?: ({children}: {children: ReactNode}) => React.ReactElement
+    wrapper?: ({children}: ReadonlyDeep<{children: ReactNode}>) => React.ReactElement
   } = {},
 ): {
   result: {current: ReturnType<Hook> | undefined}
@@ -29,7 +30,7 @@ export const renderHookServer = <Hook extends () => unknown>(
     results.push(value)
   }
 
-  const Component = ({useHook}: {useHook: Hook}) => {
+  const Component = ({useHook}: Readonly<{useHook: Hook}>) => {
     // eslint-disable-next-line react-compiler/react-compiler -- this is intentional
     setValue(useHook() as ReturnType<Hook>)
     return null

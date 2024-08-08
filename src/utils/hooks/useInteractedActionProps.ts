@@ -1,10 +1,10 @@
-import {useRef} from 'react'
+import {type MemoizedCallback, useCallback, useRef} from 'react'
 
-import useCallback, {type MemoizedCallback} from './useCallback'
+const DEFAULT_DELAY = 200
 
 export default function useInteractedActionProps(
   action: MemoizedCallback<() => void>,
-  delay = 200,
+  delay = DEFAULT_DELAY,
 ) {
   const isInteracted = useRef(false)
 

@@ -11,7 +11,7 @@ import {addIntegration, tanstackRouterBrowserTracingIntegration} from '@sentry/r
 import {QueryClientProvider, useQueryErrorResetBoundary} from '@tanstack/react-query'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {RouterProvider} from '@tanstack/react-router'
-import {lazy, type PropsWithChildren, Suspense, useEffect, useState} from 'react'
+import {lazy, type ReadonlyPropsWithChildren, Suspense, useEffect, useState} from 'react'
 // import {Inspector} from 'react-dev-inspector'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Toaster} from 'sonner'
@@ -29,9 +29,9 @@ import ErrorComponent from './views/Error/ErrorComponent'
 
 const JotaiDevTools = import.meta.env.PROD
   ? () => null
-  : lazy(() => import('./utils/components/JotaiDevTools'))
+  : lazy(async () => import('./utils/components/JotaiDevTools'))
 
-function QueryErrorBoundary({children}: PropsWithChildren) {
+function QueryErrorBoundary({children}: ReadonlyPropsWithChildren) {
   const {reset} = useQueryErrorResetBoundary()
 
   return (

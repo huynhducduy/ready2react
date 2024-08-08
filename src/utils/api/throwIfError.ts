@@ -1,4 +1,5 @@
 import type {AxiosResponse} from 'axios'
+import type {ReadonlyDeep} from 'type-fest'
 
 import ReadableError from '@/utils/api/ReadableError'
 
@@ -7,15 +8,18 @@ import ReadableError from '@/utils/api/ReadableError'
  * The reason why we need is because there are some API that always return 200 no matter what,
  * so we need to check the error code.
  */
-export default function throwIfError(res: AxiosResponse, nonErrorCodes: string[]): undefined
 export default function throwIfError(
-  res: AxiosResponse,
-  nonErrorCodes: string[],
+  res: ReadonlyDeep<AxiosResponse>,
+  nonErrorCodes: readonly string[],
+): undefined
+export default function throwIfError(
+  res: ReadonlyDeep<AxiosResponse>,
+  nonErrorCodes: readonly string[],
   msgIfPossible: true,
 ): undefined | string
 export default function throwIfError(
-  res: AxiosResponse,
-  nonErrorCodes: string[] = [],
+  res: ReadonlyDeep<AxiosResponse>,
+  nonErrorCodes: readonly string[] = [],
   msgIfPossible?: boolean,
 ): undefined | string {
   /* eslint-disable @typescript-eslint/no-unsafe-member-access -- its intentional */

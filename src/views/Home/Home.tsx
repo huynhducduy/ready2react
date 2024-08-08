@@ -131,7 +131,7 @@ export default function Home() {
         <a
           href='#hehe'
           style={{
-            fontSize: 100,
+            fontSize: '100',
           }}
         >
           link

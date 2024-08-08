@@ -1,4 +1,6 @@
-export default function randomlyThrowError(message: string) {
-  const result = Math.random() < 0.5
+const DEFAULT_RATE = 0.5
+
+export default function randomlyThrowError(message: string, rate = DEFAULT_RATE) {
+  const result = Math.random() < rate
   if (result) throw new Error(message)
 }

@@ -62,6 +62,10 @@
     {
       "rule": "prettier/prettier",
       "severity": "off" // Silent the stylistic rules in you IDE, but still auto fix them
+    },
+    {
+      "rule": "simple-import-sort/imports",
+      "severity": "off" // Silent the stylistic rules in you IDE, but still auto fix them
     }
   ],
   "eslint.runtime": "node", // Run eslint via our local node instead of vscode's node

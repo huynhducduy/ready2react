@@ -5,7 +5,7 @@ interface SkipLinkProps {
   to: `#${string}`
 }
 
-export default memo(function SkipLink({title, to: href}: SkipLinkProps) {
+export default memo(function SkipLink({title, to: href}: Readonly<SkipLinkProps>) {
   return (
     <a href={href} className='skip-link visually-hidden'>
       {title}
