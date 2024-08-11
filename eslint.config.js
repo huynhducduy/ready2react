@@ -33,6 +33,7 @@ import * as pluginRegexp from 'eslint-plugin-regexp'
 import pluginSecurity from 'eslint-plugin-security'
 import pluginSimpleImportSort from 'eslint-plugin-simple-import-sort'
 import pluginSonarjs from 'eslint-plugin-sonarjs'
+import pluginTestingLibrary from 'eslint-plugin-testing-library'
 import pluginVitest from 'eslint-plugin-vitest'
 import globals from 'globals'
 // eslint-disable-next-line import-x/no-unresolved -- import-x error
@@ -478,11 +479,8 @@ const reactConfigs = [
 // ]
 
 const testConfigs = [
-  ...applyToVitestNotReact('testing/dom', compat.extends('plugin:testing-library/dom')),
-  ...applyToVitestReact(
-    'testing/react',
-    fixupConfigRules(compat.extends('plugin:testing-library/react')),
-  ),
+  ...applyToVitestNotReact('testing/dom', pluginTestingLibrary.configs['flat/dom']),
+  ...applyToVitestReact('testing/react', pluginTestingLibrary.configs['flat/react']),
   ...applyToVitest('testing/less-strict', {
     rules: {
       'no-magic-numbers': 'off',
