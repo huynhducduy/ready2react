@@ -87,7 +87,7 @@ function createApplyTo(include, exclude = []) {
   }
 }
 
-const applyToAll = createApplyTo(['**/*.?(c|m)[jt]s?(x)', '**/*.json?(c|5)'])
+const applyToAll = createApplyTo(['**/*.{?(c|m)[jt]s?(x),json?(c|5)}'])
 const applyToScript = createApplyTo(['**/*.?(c|m)[jt]s?(x)'])
 const applyToJson = createApplyTo(
   ['**/*.json'],

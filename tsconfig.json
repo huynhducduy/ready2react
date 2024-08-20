@@ -37,6 +37,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
     "composite": false,
     "declaration": false,
     "sourceMap": true,

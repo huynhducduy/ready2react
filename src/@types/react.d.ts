@@ -13,9 +13,10 @@ declare module 'react' {
     (...args: readonly Parameters<T>): ReturnType<T>
     readonly memoized: true
   }
+
   type MemoizedCallbackOrDispatch<T extends (...arg: readonly [any]) => any> =
     | MemoizedCallback<T>
-    | Dispatch<Parameters<T>[0]>
+    | Dispatch<SetStateAction<Parameters<T>[0]>>
 
   function useCallback<T extends (...args: readonly any[]) => any>(
     callback: T,

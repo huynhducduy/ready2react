@@ -11,14 +11,14 @@ function escape(filepath) {
 }
 
 export default {
-  '*.{js,jsx,mjs,cjs,ts,mts,cts,tsx,vue,json}': filenames => [
+  '*.{?(c|m)[jt]s?(x),json?(c|5),vue}': filenames => [
     `${packageJson.scripts['base:lint:script']} --fix ${filenames.map(escape).join(' ')}`,
   ],
-  '(*.{js,jsx,mjs,cjs,ts,mts,cts,tsx,vue,json})': filenames => [
+  '(*.{?(c|m)[jt]s?(x),json?(c|5),vue})': filenames => [
     `${packageJson.scripts['test']} related --run ${filenames.map(escape).join(' ')}`,
   ],
-  '*.{ts,tsx,vue}': [() => 'tsc'],
-  '*.{scss,sass,css,pcss}': filenames => [
+  '*.{ts?(x),vue}': [() => 'tsc'],
+  '*.{s[ca]ss,?(p)css}': filenames => [
     `${packageJson.scripts['base:lint:style']} --fix ${filenames.map(escape).join(' ')}`,
   ],
 }

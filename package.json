@@ -25,6 +25,7 @@
     "partytown": "partytown copylib public/~partytown",
     "prebuild": "pnpm run typecheck && pnpm run partytown",
     "build": "vite build",
+    "postbuild": "find dist/ -name \"*.map\" -type f -delete",
     "analyzebundle": "pnpm dlx vite-bundle-visualizer",
     "preview": "vite preview",
     "prepare": "husky",
