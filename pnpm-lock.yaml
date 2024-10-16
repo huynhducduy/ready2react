@@ -56,8 +56,8 @@ importers:
         specifier: ^1.9.16
         version: 1.9.16
       axios:
-        specifier: ^1.7.3
-        version: 1.7.3(debug@4.3.5)
+        specifier: ^1.7.4
+        version: 1.7.4(debug@4.3.5)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1552,6 +1552,7 @@ packages:
   '@dotlottie/common@0.7.11':
     resolution: {integrity: sha512-0ThV1uZVfKJ2pwYQy52EKH8edKnvEsSDGdxRf/n1Wz15xbqI+8qKs0BHSIQ7yLyaU5gFSaEooEgK1kTiKJaE4g==}
     engines: {node: '>18.0.0'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@dotlottie/dotlottie-js@0.7.2':
     resolution: {integrity: sha512-BIEFkaKCRzVSHgKoZ2d/Squ1Rw4U93/YmHvON04PCx2gOBRAM2//GYUPcVijYHT8dQtom07KoyTKpXh0cRzKKw==}
@@ -1559,6 +1560,7 @@ packages:
 
   '@dotlottie/react-player@1.6.19':
     resolution: {integrity: sha512-kXQ/BD3OnK70wIGOIy5DWg1jgfgb3AWaDLXwVnLtzSmTBcH2dFcU/XGXF+z4w8vm2/s2tdbNd7c4yq8twoIVLw==}
+    deprecated: This package is superceded by @lottiefiles/dotlottie-react
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
@@ -4242,8 +4244,8 @@ packages:
     resolution: {integrity: sha512-QbUdXJVTpvUTHU7871ppZkdOLBeGUKBQWHkHrvN2V9IQWGMt61zf3B45BtzjxEJzYuj0JBjBZP/hmYS/R9pmAw==}
     engines: {node: '>=4'}
 
-  axios@1.7.3:
-    resolution: {integrity: sha512-Ar7ND9pU99eJ9GpoGQKhKf58GpUOgnzuaB7ueNQ5BMi0p+LZ5oaEnfF999fAArcTIBwXTCHAmGcHOZJaWPq9Nw==}
+  axios@1.7.4:
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
 
   axobject-query@3.1.1:
     resolution: {integrity: sha512-goKlv8DZrK9hUh975fnHzhNIO4jUnFCfv/dszV5VwUGDFjI6vQ2VwoyjYjYNEbBE8AH87TduWP5uyDR1D+Iteg==}
@@ -5485,6 +5487,7 @@ packages:
   eslint@6.8.0:
     resolution: {integrity: sha512-K+Iayyo2LtyYhDSYwz5D5QdWw0hCacNzyq1Y821Xna2xSJj7cijoLLYmLxTQgcgZ9mC61nryMy9S7GRbYpI5Ig==}
     engines: {node: ^8.10.0 || ^10.13.0 || >=11.10.1}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.8.0:
@@ -6474,7 +6477,6 @@ packages:
     resolution: {integrity: sha512-Quz3MvAwHxVYNXsOByL7xI5EB2WYOeFswqaHIA3qOK3isRWTxiplBEocmmru6XmxDB2L7jDNYtYA4FyimoAFEw==}
     engines: {node: '>=8.17.0'}
     hasBin: true
-    bundledDependencies: []
 
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
@@ -13807,7 +13809,7 @@ snapshots:
 
   axe-core@4.9.1: {}
 
-  axios@1.7.3(debug@4.3.5):
+  axios@1.7.4(debug@4.3.5):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.5)
       form-data: 4.0.0
@@ -17344,7 +17346,7 @@ snapshots:
 
   posthog-node@3.6.3:
     dependencies:
-      axios: 1.7.3(debug@4.3.5)
+      axios: 1.7.4(debug@4.3.5)
       rusha: 0.8.14
     transitivePeerDependencies:
       - debug
@@ -19068,7 +19070,7 @@ snapshots:
   vite-plugin-mkcert@1.17.5(vite@5.3.5(@types/node@20.14.10)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(terser@5.31.3)):
     dependencies:
       '@octokit/rest': 20.1.1
-      axios: 1.7.3(debug@4.3.5)
+      axios: 1.7.4(debug@4.3.5)
       debug: 4.3.5
       picocolors: 1.0.1
       vite: 5.3.5(@types/node@20.14.10)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(terser@5.31.3)
