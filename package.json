@@ -218,7 +218,7 @@
     "@types/react-dom": "npm:types-react-dom@rc"
   },
   "engines": {
-    "node": "20.15.1"
+    "node": "20.18.0"
   },
   "pnpm": {
     "overrides": {

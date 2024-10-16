@@ -11,7 +11,6 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 import pluginGitignore from 'eslint-config-flat-gitignore'
 import pluginCssModules from 'eslint-plugin-css-modules'
 import pluginDepend from 'eslint-plugin-depend'
-// import pluginDeprecation from 'eslint-plugin-deprecation'
 import {plugin as pluginExceptionHandling} from 'eslint-plugin-exception-handling'
 import pluginI18next from 'eslint-plugin-i18next'
 import pluginImportX from 'eslint-plugin-import-x'
@@ -235,15 +234,6 @@ const typescriptConfigs = [
       },
     },
   }),
-  // Disabled due to poor performance
-  // ...applyToTypescript('typescript/deprecation', {
-  //   plugins: {
-  //     deprecation: fixupPluginRules(pluginDeprecation),
-  //   },
-  //   rules: {
-  //     'deprecation/deprecation': 'error',
-  //   },
-  // }),
   ...applyToTypescript('typescript/strict', tsEslint.configs.strictTypeChecked),
   ...applyToTypescript('typescript/stylistic', tsEslint.configs.stylisticTypeChecked),
   ...applyToTypescript('typescript', {
